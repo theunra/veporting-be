@@ -5,8 +5,10 @@ export class User {
   @PrimaryColumn('uuid')
   id: string;
 
-  @Column('varchar')
-  name: string;
+  @Column("varchar", {
+        nullable : true
+    })
+    email : string;
 
   @Column('varchar')
   email: string;
