@@ -5,6 +5,7 @@ import { ReportModule } from './report/report.module';
 import { ConfigModule } from '@nestjs/config';
 import { ModelModule } from './model/model.module';
 import { UserModule } from './user/user.module';
+import { FindingModule } from './finding/finding.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { UserModule } from './user/user.module';
     ModelModule,
     ReportModule,
     UserModule,
+    FindingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

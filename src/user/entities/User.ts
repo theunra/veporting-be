@@ -1,24 +1,24 @@
-import { BaseEntity, Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
-export class User{
-    @PrimaryColumn("uuid")
-    id : string;
-    
-    @Column("varchar")
-    name : string;
+export class User {
+  @PrimaryColumn('uuid')
+  id: string;
 
-    @Column("varchar", {
+  @Column("varchar", {
         nullable : true
     })
     email : string;
 
-    @Column("varchar")
-    username : string;
+  @Column('varchar')
+  email: string;
 
-    @Column("varchar", {length:60})
-    pasw_hash : string;
+  @Column('varchar')
+  username: string;
 
-    @Column("varchar")
-    pasw_salt : string;
+  @Column('varchar', { length: 60 })
+  pasw_hash: string;
+
+  @Column('varchar')
+  pasw_salt: string;
 }
