@@ -4,22 +4,22 @@ import * as db from 'src/model/db';
 @Injectable()
 export class ReportService {
     async getAllReport(){
-        return db.getAllReport();
+        return db.report.getAllReport();
     }
 
     async createReport(report){        
-        return db.createReport(report);
+        return db.report.createReport(report);
     }
 
     async getReport(id: string){
-        return db.getReportById(id);
+        return db.report.getReportById(id);
     }
 
     async updateReport(id: string, reportUpdate){
-        return db.updateReportById(id, reportUpdate);
+        return db.report.updateReportById(id, reportUpdate);
     }
 
     async deleteReport(id: string){
-        return db.deleteReportById(id);
+        return db.report.deleteReportById(id);
     }
 }
