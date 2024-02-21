@@ -54,14 +54,13 @@ export class AddFindings1708502654826 implements MigrationInterface {
             name: 'reportId',
             type: 'uuid',
           },
-        ],
-        foreignKeys: [
           {
-            columnNames: ['reportId'],
-            referencedColumnNames: ['id'],
-            referencedTableName: 'reports',
-            onDelete: 'CASCADE',
-            onUpdate: 'CASCADE',
+            name: 'created_at',
+            type: 'timestamp',
+          },
+          {
+            name: 'updated_at',
+            type: 'timestamp',
           },
         ],
       }),
