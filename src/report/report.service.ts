@@ -9,7 +9,19 @@ export class ReportService {
 
     createReport(report){
         db.createReport(report);
-        console.log(db.getAllReport())
         return 'ok';
+    }
+
+    getReport(id: string){
+        const report = db.getReportById(id);
+        return report;
+    }
+
+    updateReport(id: string, reportUpdate){
+        return db.updateReportById(id, reportUpdate);
+    }
+
+    deleteReport(id: string){
+        return db.deleteReportById(id);
     }
 }
