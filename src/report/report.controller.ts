@@ -8,34 +8,34 @@ export class ReportController {
 
     //TESTING
     @Get('all')
-    getAllReport(){
-        return this.reportService.getAllReport();
+    async getAllReport(){
+        return await this.reportService.getAllReport();
     }
 
     @Get(':id')
-    getReport(
+    async getReport(
         @Param('id') id: string,
     ){
-        return this.reportService.getReport(id);
+        return await this.reportService.getReport(id);
     }
 
     @Post('create')
-    createReport(@Body() report : CreateReportDto,){
-        return this.reportService.createReport(report);
+    async createReport(@Body() report : CreateReportDto,){
+        return await this.reportService.createReport(report);
     }
 
     @Put(':id')
-    updateReportById(
+    async updateReportById(
         @Param('id') id:string,
         @Body() reportUpdate : UpdateReportDto,
     ){
-        return this.reportService.updateReport(id, reportUpdate);
+        return await this.reportService.updateReport(id, reportUpdate);
     }
 
     @Delete(':id')
-    deleteReportById(
+    async deleteReportById(
         @Param('id') id:string,
     ){
-        return this.reportService.deleteReport(id);
+        return await this.reportService.deleteReport(id);
     }
 }

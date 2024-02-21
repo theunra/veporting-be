@@ -3,25 +3,23 @@ import * as db from 'src/model/db';
 
 @Injectable()
 export class ReportService {
-    getAllReport () : db.ReportData {
+    async getAllReport(){
         return db.getAllReport();
     }
 
-    createReport(report){
-        db.createReport(report);
-        return 'ok';
+    async createReport(report){        
+        return db.createReport(report);
     }
 
-    getReport(id: string){
-        const report = db.getReportById(id);
-        return report;
+    async getReport(id: string){
+        return db.getReportById(id);
     }
 
-    updateReport(id: string, reportUpdate){
+    async updateReport(id: string, reportUpdate){
         return db.updateReportById(id, reportUpdate);
     }
 
-    deleteReport(id: string){
+    async deleteReport(id: string){
         return db.deleteReportById(id);
     }
 }
