@@ -8,7 +8,9 @@ export class User{
     @Column("varchar")
     name : string;
 
-    @Column("varchar")
+    @Column("varchar", {
+        nullable : true
+    })
     email : string;
 
     @Column("varchar")
