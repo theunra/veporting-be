@@ -27,16 +27,16 @@ export class FindingController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.findingService.findOne(+id);
+    return this.findingService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateFindingDto: UpdateFindingDto) {
-    return this.findingService.update(+id, updateFindingDto);
+    return this.findingService.update(id, updateFindingDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.findingService.remove(+id);
+    return this.findingService.remove(id);
   }
 }

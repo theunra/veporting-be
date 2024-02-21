@@ -1,26 +1,39 @@
 import { Injectable } from '@nestjs/common';
 import { CreateFindingDto } from './dto/create-finding.dto';
 import { UpdateFindingDto } from './dto/update-finding.dto';
+import { Repository } from 'typeorm';
+import { Finding } from './entities/finding.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class FindingService {
-  create(createFindingDto: CreateFindingDto) {
-    return 'This action adds a new finding';
+  constructor(
+    @InjectRepository(Finding)
+    private findingRepository: Repository<Finding>,
+  ) {}
+
+  async create(createFindingDto: CreateFindingDto) {
+    const data = await this.findingRepository.create(createFindingDto);
+    return this.findingRepository.save(data);
   }
 
-  findAll() {
-    return `This action returns all finding`;
+  async findAll() {
+    return this.findingRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} finding`;
+  findOne(id: string) {
+    return this.findingRepository.findOne({
+      where: {
+        id,
+      },
+    });
   }
 
-  update(id: number, updateFindingDto: UpdateFindingDto) {
-    return `This action updates a #${id} finding`;
+  update(id: string, updateFindingDto: UpdateFindingDto) {
+    return this.findingRepository.update(id, updateFindingDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} finding`;
+  remove(id: string) {
+    return this.findingRepository.delete(id);
   }
 }

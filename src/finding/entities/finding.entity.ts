@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
 
 @Entity()
 export class Finding {
@@ -31,4 +31,8 @@ export class Finding {
 
   @Column('varchar')
   reference: string;
+
+  @OneToOne(() => Report)
+  @JoinColumn()
+  report: Report;
 }
