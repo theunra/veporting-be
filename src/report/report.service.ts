@@ -3,25 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Report } from 'src/report/entities/Report.entity';
 import { EntityManager, Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
-
-export enum ProductType {
-  PENETRATION = 'penetration',
-  VULNERABILITY = 'vulnerability',
-}
-
-export enum TestMethod {
-  GREYBOX = 'greybox',
-}
-
-function productTypeIdx(product_type: string) {
-  const vals = Object.values(ProductType);
-  return vals.findIndex((type) => type == product_type);
-}
-
-function testMethodIdx(test_method: string) {
-  const vals = Object.values(TestMethod);
-  return vals.findIndex((type) => type == test_method);
-}
+import {frameworkIdx, productTypeIdx, testMethodIdx} from './report.data';
 
 @Injectable()
 export class ReportService {
@@ -38,17 +20,24 @@ export class ReportService {
   async createReport(report) {
     const product_type = productTypeIdx(report.product_type);
     const test_method = testMethodIdx(report.test_method);
-
+    const framework = frameworkIdx(report.framework);
+        
     if (product_type < 0) return;
     if (test_method < 0) return;
+    if (framework < 0) return;
 
     const new_report = this.reportRepository.create({
       id: uuidv4(),
       client_name: report.client_name,
       test_method: test_method,
       product_type: product_type,
+      framework: framework,
+      target_type: report.target_type,
+      target_address: report.target_address,
       report_date: new Date(report.report_date),
       end_date: new Date(report.end_date),
+      credential_username: report.credential_username,
+      credential_password: report.credential_password,
       created_at: new Date(),
       updated_at: new Date(),
     });
