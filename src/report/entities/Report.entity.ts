@@ -26,13 +26,12 @@ export class Report extends BaseEntity {
   @Column('varchar')
   target_type: string;
 
-  @Column('text', {array: true, default: []})
+  @Column('text', { array: true, default: [] })
   target_address: string[];
 
-  
   @Column('varchar')
   credential_username: string;
-  
+
   @Column('varchar')
   credential_password: string;
 

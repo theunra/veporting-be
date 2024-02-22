@@ -42,4 +42,8 @@ export class CreateFindingDto {
   @IsString()
   @IsNotEmpty()
   reference: string;
+
+  @IsString()
+  @IsNotEmpty()
+  reportId: string;
 }

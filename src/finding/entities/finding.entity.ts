@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Report } from '@/report/entities/Report.entity';
 
 @Entity()
 export class Finding {

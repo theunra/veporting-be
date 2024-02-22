@@ -13,7 +13,7 @@ export class FindingService {
   ) {}
 
   async create(createFindingDto: CreateFindingDto) {
-    const data = await this.findingRepository.create(createFindingDto);
+    const data = this.findingRepository.create(createFindingDto);
     return this.findingRepository.save(data);
   }
 
