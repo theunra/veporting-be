@@ -3,6 +3,9 @@ import { MigrationInterface, QueryRunner, TableForeignKey } from 'typeorm';
 export class ReportToFindingRelations1708503448867
   implements MigrationInterface
 {
+  name?: string;
+  transaction?: boolean;
+
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.getTable('findings').then(async (table) => {
       if (
@@ -10,16 +13,14 @@ export class ReportToFindingRelations1708503448867
           (fk) => fk.columnNames.indexOf('reportId') !== -1,
         )
       ) {
-        await queryRunner.createForeignKey('findings', {
-          columnNames: ['reportId'],
-          referencedColumnNames: ['id'],
-          referencedTableName: 'reports',
-          onDelete: 'CASCADE',
-          '@instanceof': undefined,
-          clone: function (): TableForeignKey {
-            throw new Error('Function not implemented.');
-          },
-        });
+        await queryRunner.createForeignKeys('findings', [
+          new TableForeignKey({
+            columnNames: ['reportId'],
+            referencedColumnNames: ['id'],
+            referencedTableName: 'reports',
+            onDelete: 'CASCADE',
+          }),
+        ]);
       }
     });
   }

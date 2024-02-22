@@ -8,5 +8,6 @@ import { Finding } from './entities/finding.entity';
   imports: [TypeOrmModule.forFeature([Finding])],
   controllers: [FindingController],
   providers: [FindingService],
+  exports: [FindingService],
 })
 export class FindingModule {}

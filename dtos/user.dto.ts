@@ -1,29 +1,29 @@
-import { IsDate, IsNotEmpty, IsOptional, IsString, isString } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateUserDto {
-    @IsString()
-    @IsOptional()
-    name : string;
+  @IsString()
+  @IsOptional()
+  name: string;
 
-    @IsString()
-    @IsOptional()
-    email : string;
+  @IsString()
+  @IsOptional()
+  email: string;
 
-    @IsString()
-    @IsNotEmpty()
-    username : string;
+  @IsString()
+  @IsNotEmpty()
+  username: string;
 
-    @IsString()
-    @IsNotEmpty()
-    password : string;
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 }
 
 export class AuthUserDto {
-    @IsString()
-    @IsNotEmpty()
-    username : string;
+  @IsString()
+  @IsNotEmpty()
+  username: string;
 
-    @IsString()
-    @IsNotEmpty()
-    password : string;
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './entities/User';
+import { User } from './entities/User.entity';
 import { Repository, EntityManager } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
@@ -7,64 +7,69 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UserService {
-    constructor(
-        @InjectRepository(User)
-        private userRepository : Repository<User>,
-        private readonly entityManager : EntityManager,
-    ){}
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    private readonly entityManager: EntityManager,
+  ) {}
 
-    async getAllUser(){
-        return await this.userRepository.find({});
-    }
-    async createUser(user){
-        const saltRounds = 10;
-        const salt = await bcrypt.genSalt(saltRounds);
-        const passw_hash = await bcrypt.hash(user.password, salt);
+  async getAllUser() {
+    return await this.userRepository.find({});
+  }
+  async createUser(user) {
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const passw_hash = await bcrypt.hash(user.password, salt);
 
-        const new_user = this.userRepository.create({
-            id : uuidv4(),
-            email : user.email,
-            name : user.name,
-            username : user.username,
-            pasw_hash : passw_hash,
-            pasw_salt : salt,
-        });
+    const new_user = this.userRepository.create({
+      id: uuidv4(),
+      email: user.email,
+      name: user.name,
+      username: user.username,
+      pasw_hash: passw_hash,
+      pasw_salt: salt,
+    });
 
-        return await this.entityManager.save(new_user);
-    }
+    return await this.entityManager.save(new_user);
+  }
 
-    async getUser(id: string){
-        return this.userRepository.findOne({where:{id:id}});
-    }
+  async getUser(id: string) {
+    return this.userRepository.findOne({ where: { id: id } });
+  }
 
-    async updateUser(id: string, userUpdate){
-        const user = await this.getUser(id);
+  async updateUser(id: string, userUpdate) {
+    const user = await this.getUser(id);
 
-        if(!user) return;
+    if (!user) return;
 
-        const updated_user = {
-            ...user,
-            ...userUpdate,
-        }
+    const updated_user = {
+      ...user,
+      ...userUpdate,
+    };
 
-        return this.userRepository.save(updated_user);
-    }
+    return this.userRepository.save(updated_user);
+  }
 
-    async deleteUser(id: string){
-        const user = await this.getUser(id);
+  async deleteUser(id: string) {
+    const user = await this.getUser(id);
 
-        if(!user) return;
+    if (!user) return;
 
-        return this.userRepository.remove(user);
-    }
+    return this.userRepository.remove(user);
+  }
 
-    async authUser(user: any){
-        const user_data = await this.userRepository.findOne({where: {name: user.name}});
+  async authUser(user: any) {
+    const user_data = await this.userRepository.findOne({
+      where: { name: user.name },
+    });
 
-        if(!user_data) return false;
+    if (!user_data) return false;
 
-        const compare_res = await bcrypt.compare(user.password, user_data.pasw_hash);
+    const compare_res = await bcrypt.compare(
+      user.password,
+      user_data.pasw_hash,
+    );
 
-        return compare_res;
-    }
+    return compare_res;
+  }
 }
