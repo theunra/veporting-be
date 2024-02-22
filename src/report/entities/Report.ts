@@ -20,6 +20,22 @@ export class Report extends BaseEntity {
   @Column('char')
   test_method: number;
 
+  @Column('char')
+  framework: number;
+
+  @Column('varchar')
+  target_type: string;
+
+  @Column('text', {array: true, default: []})
+  target_address: string[];
+
+  
+  @Column('varchar')
+  credential_username: string;
+  
+  @Column('varchar')
+  credential_password: string;
+
   @Column('timestamptz')
   created_at: Date;
 
