@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ModelModule } from './model/model.module';
 import { UserModule } from './user/user.module';
 import { FindingModule } from './finding/finding.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { FindingModule } from './finding/finding.module';
     ReportModule,
     UserModule,
     FindingModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

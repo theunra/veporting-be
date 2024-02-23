@@ -1,3 +1,4 @@
+import { PartialType } from '@nestjs/mapped-types';
 import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateReportDto {
@@ -39,27 +40,4 @@ export class CreateReportDto {
   credential_password: string;
 }
 
-export class UpdateReportDto {
-  @IsString()
-  @IsNotEmpty()
-  @IsOptional()
-  client_name: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @IsOptional()
-  product_type: string;
-
-  @IsString()
-  @IsOptional()
-  report_date: string;
-
-  @IsString()
-  @IsOptional()
-  end_date: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @IsOptional()
-  test_method: string;
-}
+export class UpdateReportDto extends PartialType(CreateReportDto){}
