@@ -16,8 +16,7 @@ export class AuthService {
     testRoute(){
         return 'auth route ok';
     }
-    async signIn(auth : SignInDto){
-        console.log(auth);
+    async validateUser(auth : SignInDto){
         const user = await this.userService.findWhereUsername(auth.username);
         
         if(!user) throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
@@ -26,15 +25,15 @@ export class AuthService {
             auth.password,
             user.pasw_hash
         );
-            
-        if(compare_res) {
-            //logged in, create token
-            const payload = {sub : user.id, username : user.username};
-            return {
-                access_token: await this.jwtService.signAsync(payload),
-            }
-        } else {
-            throw new HttpException('Invalid Credential', HttpStatus.UNAUTHORIZED);
+
+        if(compare_res) return user;
+        else return;
+    }
+
+    async login(user : any) {
+        const payload = {sub : user.id, username : user.username};
+        return {
+            access_token: await this.jwtService.signAsync(payload),
         }
     }
 }

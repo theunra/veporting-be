@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/sign-in.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -11,8 +12,15 @@ export class AuthController {
         return this.authService.testRoute();
     }
 
+    @UseGuards(AuthGuard('jwt'))
+    @Get('restrict')
+    restrictedRoute(){
+        return 'ok';
+    }
+    
+    @UseGuards(AuthGuard('local'))
     @Post('sign-in')
-    signIn(@Body() auth : SignInDto,){
-        return this.authService.signIn(auth);
+    signIn(@Request() req,){
+        return this.authService.login(req.user);
     }
 }
