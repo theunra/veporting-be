@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { Finding } from '@/finding/entities/finding.entity';
+import { BaseEntity, Column, Entity, OneToOne, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Report extends BaseEntity {
@@ -40,4 +41,7 @@ export class Report extends BaseEntity {
 
   @Column('timestamptz')
   updated_at: Date;
+
+  @OneToOne(() => Finding, (finding) => finding.report)
+  findings: Finding[];
 }

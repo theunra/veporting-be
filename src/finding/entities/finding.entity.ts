@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, ManyToOne } from 'typeorm';
 import { Report } from '@/report/entities/Report.entity';
 
 @Entity()
@@ -33,7 +33,6 @@ export class Finding {
   @Column('varchar')
   reference: string;
 
-  @OneToOne(() => Report)
-  @JoinColumn()
+  @ManyToOne(() => Report, (report) => report.findings)
   report: Report;
 }
