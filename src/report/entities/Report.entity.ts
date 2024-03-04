@@ -1,4 +1,4 @@
-import { Finding } from '@/finding/entities/finding.entity';
+import { Finding } from '@/finding/entities/Finding.entity';
 import { BaseEntity, Column, Entity, OneToOne, PrimaryColumn } from 'typeorm';
 
 @Entity()

@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('reset_password_token')
+@Entity('reset_password')
 export class ResetPassword {
   @PrimaryGeneratedColumn()
   id: number;

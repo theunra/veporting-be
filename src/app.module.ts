@@ -9,6 +9,7 @@ import { FindingModule } from './finding/finding.module';
 import { AuthModule } from './auth/auth.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -20,8 +21,8 @@ import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
     AuthModule,
     MailerModule.forRoot({
       transport: {
-        host: 'smtp.gmail.com',
-        port: 587,
+        host: 'sandbox.smtp.mailtrap.io',
+        port: 2525,
         secure: false,
         auth: {
           user: process.env.EMAIL_USER,
@@ -32,13 +33,10 @@ import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
         from: '"nest-modules" <modules@nestjs.com>',
       },
       template: {
-        dir: __dirname + '/templates',
+        dir: join(__dirname, '/auth/template'),
         adapter: new EjsAdapter({
           inlineCssEnabled: true,
         }),
-        options: {
-          strict: true,
-        },
       },
     }),
   ],

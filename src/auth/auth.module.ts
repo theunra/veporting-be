@@ -7,6 +7,8 @@ import { UserModule } from '@/user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ResetPassword } from './entities/ResetPassword.entity';
 
 @Module({
   imports: [
@@ -17,8 +19,10 @@ import { JwtStrategy } from './jwt.strategy';
     }),
     UserModule,
     PassportModule,
+    TypeOrmModule.forFeature([ResetPassword]),
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
+  exports: [AuthService],
 })
 export class AuthModule {}

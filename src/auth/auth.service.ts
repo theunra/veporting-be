@@ -6,16 +6,19 @@ import * as bcrypt from 'bcrypt';
 import { UserService } from '@/user/user.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
-import { ResetPassword } from './entities/resetPassword.entity';
+import { ResetPassword } from './entities/ResetPassword.entity';
 import { MailerService } from '@nestjs-modules/mailer';
+import 'dotenv/config';
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
     private userService: UserService,
+
     @InjectRepository(ResetPassword)
     private resetPasswordRepository: Repository<ResetPassword>,
+
     private readonly entityManager: EntityManager,
     private readonly mailerService: MailerService,
   ) {}
@@ -59,16 +62,25 @@ export class AuthService {
 
     await this.entityManager.save(resetPassword);
 
-    return token;
+    return await this.sendEmail(email, token);
   }
+
+  async findWhereResetPasswordToken(token: string) {
+    return await this.resetPasswordRepository.findOne({
+      where: {
+        token,
+      },
+    });
+  }
+
   async resetPassword(token: string, newPassword: string) {
-    // const user = await this.userService.findWhereResetPasswordToken(token);
+    const user = await this.findWhereResetPasswordToken(token);
     if (!user) throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
-    return await this.userService.resetPassword(user, newPassword);
+    // return await this.userService.resetPassword(user, newPassword);
   }
 
   async sendEmail(email: string, token: string) {
-    const url = `http://localhost:3000/reset-password/${token}`;
+    const url = `${process.env.BASE_URL}/reset-password/${token}`;
     await this.mailerService.sendMail({
       to: email,
       subject: 'Reset Password',
@@ -77,5 +89,9 @@ export class AuthService {
         url,
       },
     });
+
+    return {
+      message: 'Email Sent',
+    };
   }
 }

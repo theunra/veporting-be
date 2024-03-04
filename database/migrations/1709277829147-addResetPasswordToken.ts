@@ -4,7 +4,7 @@ export class AddResetPasswordToken1709277829147 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'reset_password_token',
+        name: 'reset_password',
         columns: [
           {
             name: 'id',
@@ -20,7 +20,7 @@ export class AddResetPasswordToken1709277829147 implements MigrationInterface {
           },
           {
             name: 'user_id',
-            type: 'int',
+            type: 'uuid',
             isNullable: false,
           },
           {
@@ -33,7 +33,7 @@ export class AddResetPasswordToken1709277829147 implements MigrationInterface {
           {
             columnNames: ['user_id'],
             referencedColumnNames: ['id'],
-            referencedTableName: 'user',
+            referencedTableName: 'users',
             onDelete: 'CASCADE',
           },
         ],
@@ -42,6 +42,6 @@ export class AddResetPasswordToken1709277829147 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('reset_password_token');
+    await queryRunner.dropTable('reset_password');
   }
 }
