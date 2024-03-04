@@ -4,6 +4,7 @@ import { DataSource } from 'typeorm';
 import { Report } from '@/report/entities/report.entity';
 import { Finding } from '@/finding/entities/finding.entity';
 import { User } from '@/user/entities/user.entity';
+import { ResetPassword } from '@/auth/entities/resetPassword.entity';
 config();
 
 const configService = new ConfigService();
@@ -17,7 +18,7 @@ export const configOptions = {
   database: configService.getOrThrow('DB_NAME'),
   synchronize: configService.getOrThrow('DB_SYNC'),
   // entities: [__dirname + '/**/*.entity{.ts,.js}'],
-  entities: [Report, Finding, User],
+  entities: [Report, Finding, User, ResetPassword],
   migrations: [__dirname + '/migrations/*'],
 };
 

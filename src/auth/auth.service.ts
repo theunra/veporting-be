@@ -4,12 +4,20 @@ import { SignUpDto } from './dto/sign-up.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UserService } from '@/user/user.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EntityManager, Repository } from 'typeorm';
+import { ResetPassword } from './entities/resetPassword.entity';
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
     private userService: UserService,
+    @InjectRepository(ResetPassword)
+    private resetPasswordRepository: Repository<ResetPassword>,
+    private readonly entityManager: EntityManager,
+    private readonly mailerService: MailerService,
   ) {}
 
   testRoute() {
@@ -37,5 +45,37 @@ export class AuthService {
     const user = await this.userService.createUser(dto);
     delete user.pasw_hash;
     return user;
+  }
+
+  async sendResetPasswordEmail(email: string) {
+    const user = await this.userService.findWhereEmail(email);
+    if (!user) throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
+
+    const token = Math.floor(100000 + Math.random() * 900000).toString();
+    const resetPassword = this.resetPasswordRepository.create({
+      token,
+      user_id: user.id,
+    });
+
+    await this.entityManager.save(resetPassword);
+
+    return token;
+  }
+  async resetPassword(token: string, newPassword: string) {
+    // const user = await this.userService.findWhereResetPasswordToken(token);
+    if (!user) throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
+    return await this.userService.resetPassword(user, newPassword);
+  }
+
+  async sendEmail(email: string, token: string) {
+    const url = `http://localhost:3000/reset-password/${token}`;
+    await this.mailerService.sendMail({
+      to: email,
+      subject: 'Reset Password',
+      template: 'reset-password',
+      context: {
+        url,
+      },
+    });
   }
 }
