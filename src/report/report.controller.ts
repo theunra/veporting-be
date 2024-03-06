@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, Param, Post, Put, Res, StreamableFile } from '@nestjs/common';
 import { ReportService } from './report.service';
 import { CreateReportDto, UpdateReportDto } from 'src/report/dto/report.dto';
+import { Response } from 'express';
 
 @Controller('report')
 export class ReportController {
@@ -17,6 +18,16 @@ export class ReportController {
         @Param('id') id: string,
     ){
         return await this.reportService.getReport(id);
+    }
+
+    @Get(':id/download')
+    @Header('Content-Type', 'text')
+    @Header('Content-Disposition', 'attachment; filename="report.docx"')
+    async downloadReport(
+        @Param('id') id: string,
+        @Res({ passthrough : true }) res: Response,
+    ){
+        return await this.reportService.downloadReport(id);
     }
 
     @Post('create')

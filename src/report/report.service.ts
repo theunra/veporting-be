@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, StreamableFile } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Report } from 'src/report/entities/Report.entity';
 import { EntityManager, Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import {frameworkIdx, productTypeIdx, testMethodIdx} from './report.data';
+import { createReadStream } from 'fs';
+import { join } from 'path';
 
 @Injectable()
 export class ReportService {
@@ -43,6 +45,19 @@ export class ReportService {
     });
 
     return this.reportRepository.save(new_report);
+  }
+
+  async downloadReport(id: string) {
+    const report = this.reportRepository.findOne({
+      where: { id: id, },
+    });
+
+    if(!report) return 404;
+    
+    const file = createReadStream(join(process.cwd(), 'src/report/generated-docx/testDoc.docx'));
+
+    return new StreamableFile(file);
+    
   }
 
   async getReport(id: string) {
