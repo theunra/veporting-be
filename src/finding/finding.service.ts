@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateFindingDto } from './dto/create-finding.dto';
 import { UpdateFindingDto } from './dto/update-finding.dto';
 import { Repository } from 'typeorm';
-import { Finding } from './entities/finding.entity';
+import { Finding } from './entities/Finding.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()

@@ -1,10 +1,7 @@
-import { Finding } from '@/finding/entities/finding.entity';
-import { Report } from '@/report/entities/Report.entity';
-import { User } from '@/user/entities/User.entity';
-
 import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
 import { DataSource } from 'typeorm';
+
 config();
 
 const configService = new ConfigService();
@@ -17,8 +14,8 @@ export const configOptions = {
   port: configService.getOrThrow('DB_PORT'),
   database: configService.getOrThrow('DB_NAME'),
   synchronize: configService.getOrThrow('DB_SYNC'),
-  // entities: [__dirname + '/**/*.entity{.ts,.js}'],
-  entities: [Report, Finding, User],
+  entities: ['../src/**/*.entity{.ts,.js}'],
+  // entities: [Report, Finding, User, ResetPassword],
   migrations: [__dirname + '/migrations/*'],
 };
 
