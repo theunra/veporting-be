@@ -4,7 +4,7 @@ export class AddReports1708503297180 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'reports',
+        name: 'report',
         columns: [
           {
             name: 'id',

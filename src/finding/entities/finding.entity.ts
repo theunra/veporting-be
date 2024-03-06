@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryColumn, ManyToOne } from 'typeorm';
 import { Report } from '@/report/entities/Report.entity';
 
-@Entity()
+@Entity('finding')
 export class Finding {
   @PrimaryColumn('uuid')
   id: string;
@@ -35,4 +35,10 @@ export class Finding {
 
   @ManyToOne(() => Report, (report) => report.findings)
   report: Report;
+
+  @Column('timestamptz')
+  created_at: Date;
+
+  @Column('timestamptz')
+  updated_at: Date;
 }

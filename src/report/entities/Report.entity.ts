@@ -1,16 +1,17 @@
 import { Finding } from '@/finding/entities/Finding.entity';
-import { BaseEntity, Column, Entity, OneToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryColumn } from 'typeorm';
+import { ProductType, Framework, TestMethod } from '../report.data';
 
-@Entity()
-export class Report extends BaseEntity {
+@Entity('report')
+export class Report {
   @PrimaryColumn('uuid')
   id: string;
 
   @Column('varchar')
   client_name: string;
 
-  @Column('char')
-  product_type: number;
+  @Column('enum', { enum: ProductType })
+  product_type: string;
 
   @Column('timestamptz')
   report_date: Date;
@@ -18,11 +19,11 @@ export class Report extends BaseEntity {
   @Column('timestamptz')
   end_date: Date;
 
-  @Column('char')
-  test_method: number;
+  @Column('enum', { enum: TestMethod })
+  test_method: string;
 
-  @Column('char')
-  framework: number;
+  @Column('enum', { enum: Framework })
+  framework: string;
 
   @Column('varchar')
   target_type: string;

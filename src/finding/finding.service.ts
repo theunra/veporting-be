@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateFindingDto } from './dto/create-finding.dto';
 import { UpdateFindingDto } from './dto/update-finding.dto';
 import { Repository } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 import { Finding } from './entities/Finding.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -13,27 +14,46 @@ export class FindingService {
   ) {}
 
   async create(createFindingDto: CreateFindingDto) {
-    const data = this.findingRepository.create(createFindingDto);
-    return this.findingRepository.save(data);
+    // console.log(createFindingDto);
+    const data = this.findingRepository.create({
+      id: uuidv4(),
+      ...createFindingDto,
+      created_at: new Date(),
+      updated_at: new Date(),
+    });
+    return await this.findingRepository.save(data);
   }
 
   async findAll() {
-    return this.findingRepository.find();
+    return await this.findingRepository.find();
   }
 
-  findOne(id: string) {
-    return this.findingRepository.findOne({
-      where: {
-        id,
-      },
-    });
+  async findOne(id: string) {
+    try {
+      const data = await this.findingRepository.findOne({
+        where: { id },
+      });
+      return data;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
   }
 
-  update(id: string, updateFindingDto: UpdateFindingDto) {
-    return this.findingRepository.update(id, updateFindingDto);
+  async update(id: string, updateFindingDto: UpdateFindingDto) {
+    try {
+      const data = await this.findingRepository.update(id, updateFindingDto);
+      return data;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
   }
 
-  remove(id: string) {
-    return this.findingRepository.delete(id);
+  async remove(id: string) {
+    try {
+      const data = await this.findingRepository.delete(id);
+      return data;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
   }
 }

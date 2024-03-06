@@ -1,5 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { TestMethod, Framework, ProductType } from '../report.data';
 
 export class CreateReportDto {
   @IsString()
@@ -7,6 +8,7 @@ export class CreateReportDto {
   client_name: string;
 
   @IsString()
+  @IsEnum(ProductType)
   @IsNotEmpty()
   product_type: string;
 
@@ -17,17 +19,19 @@ export class CreateReportDto {
   end_date: string;
 
   @IsString()
+  @IsEnum(TestMethod)
   @IsNotEmpty()
   test_method: string;
 
   @IsString()
+  @IsEnum(Framework)
   @IsNotEmpty()
   framework: string;
 
   @IsString()
   @IsNotEmpty()
   target_type: string;
-  
+
   @IsArray()
   target_address: string[];
 
@@ -40,4 +44,4 @@ export class CreateReportDto {
   credential_password: string;
 }
 
-export class UpdateReportDto extends PartialType(CreateReportDto){}
+export class UpdateReportDto extends PartialType(CreateReportDto) {}

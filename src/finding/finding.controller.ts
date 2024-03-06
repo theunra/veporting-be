@@ -16,27 +16,45 @@ export class FindingController {
   constructor(private readonly findingService: FindingService) {}
 
   @Post()
-  create(@Body() createFindingDto: CreateFindingDto) {
-    return this.findingService.create(createFindingDto);
+  async create(@Body() createFindingDto: CreateFindingDto) {
+    return {
+      message: 'success',
+      data: await this.findingService.create(createFindingDto),
+    };
   }
 
   @Get()
-  findAll() {
-    return this.findingService.findAll();
+  async findAll() {
+    return {
+      message: 'success',
+      data: await this.findingService.findAll(),
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.findingService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    return {
+      message: 'success',
+      data: await this.findingService.findOne(id),
+    };
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFindingDto: UpdateFindingDto) {
-    return this.findingService.update(id, updateFindingDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateFindingDto: UpdateFindingDto,
+  ) {
+    return {
+      message: 'success',
+      data: await this.findingService.update(id, updateFindingDto),
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.findingService.remove(id);
+  async remove(@Param('id') id: string) {
+    return {
+      message: 'success',
+      data: await this.findingService.remove(id),
+    };
   }
 }
