@@ -19,7 +19,7 @@ export class AuthService {
     async validateUser(auth : SignInDto){
         const user = await this.userService.findWhereUsername(auth.username);
         
-        if(!user) throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
+        if(!user) throw new HttpException('User Not Found', HttpStatus.BAD_REQUEST);
         
         const compare_res = await bcrypt.compare(
             auth.password,
