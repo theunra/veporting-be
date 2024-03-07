@@ -4,8 +4,10 @@ import { Report } from 'src/report/entities/Report.entity';
 import { EntityManager, Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import {frameworkIdx, productTypeIdx, testMethodIdx} from './report.data';
-import { createReadStream } from 'fs';
+import { createReadStream, existsSync, unlink, unlinkSync, writeFileSync } from 'fs';
 import { join } from 'path';
+import { createDocument } from './docx-generator/report-document';
+import { Packer } from 'docx';
 
 @Injectable()
 export class ReportService {
@@ -47,17 +49,70 @@ export class ReportService {
     return this.reportRepository.save(new_report);
   }
 
+  async updateReportDocx(id: string){
+    const report = await this.reportRepository.findOne({
+      where: { id: id, },
+    });
+
+    if(!report) return false;
+
+    const reportFilePath = `src/report/generated-docx/${report.id}.docx`;
+
+    /**
+     * this should be done when creating report or updating report content
+    */
+    try{
+      unlinkSync(reportFilePath);
+      
+      //wait for file actually deleted
+      while(existsSync(reportFilePath)){
+        await new Promise(r => setTimeout(r, 100));
+      }
+    } catch {
+      console.log("file not exist");
+    }
+
+    const docx = createDocument({
+      client_name : report.client_name,
+      test_method : `${report.test_method}`,
+      product_type : `${report.product_type}`,
+      framework : `${report.framework}`,
+      report_date : report.report_date.toISOString(),
+      target_address : report.target_address,
+      target_type : report.target_type,
+      findings : [],
+      credential_username : report.credential_username,
+      credential_password : report.credential_password,
+    });
+
+    Packer.toBuffer(docx).then((buffer)=>{
+      writeFileSync(reportFilePath, buffer);
+    });
+
+    while(!existsSync(reportFilePath)){
+      await new Promise(r => setTimeout(r, 100));
+    }
+    //////////////////////////////////////////////
+  }
+
   async downloadReport(id: string) {
-    const report = this.reportRepository.findOne({
+    const report = await this.reportRepository.findOne({
       where: { id: id, },
     });
 
     if(!report) return 404;
     
-    const file = createReadStream(join(process.cwd(), 'src/report/generated-docx/testDoc.docx'));
+    const reportFilePath = `src/report/generated-docx/${report.id}.docx`;
 
+    //DUMMY
+    const fileExist = false;
+
+    if(!fileExist) {
+      await this.updateReportDocx(report.id);
+    }
+
+    const file = createReadStream(join(process.cwd(), reportFilePath));
     return new StreamableFile(file);
-    
   }
 
   async getReport(id: string) {
