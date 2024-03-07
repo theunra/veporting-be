@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Request,
   UseGuards,
@@ -39,5 +40,13 @@ export class AuthController {
   @Post('reset-password')
   resetPassword(@Body('email') email: string) {
     return this.authService.sendResetPasswordEmail(email);
+  }
+
+  @Post('verify-reset-password/:token')
+  verifyResetPassword(
+    @Body('password') password: string,
+    @Param('token') token: string,
+  ) {
+    return this.authService.resetPassword(token, password);
   }
 }
