@@ -32,13 +32,10 @@ export class ReportController {
   }
   
   @Get(':id/download')
-  // @Header('Content-Type', 'text')
-  // @Header('Content-Disposition', 'attachment; filename="report.docx"')
   async downloadReport(
       @Param('id') id: string,
       @Res({ passthrough : true }) res: Response,
   ){
-      // return await this.reportService.downloadReport(id);
       return {
         message: 'success',
         data: await this.reportService.downloadReport(id),

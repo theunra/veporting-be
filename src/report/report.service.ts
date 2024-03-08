@@ -1,11 +1,10 @@
 import { Injectable, StreamableFile } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Report } from 'src/report/entities/Report.entity';
+import { Report } from '@/report/entities/report.entity';
 import { EntityManager, Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import {frameworkIdx, productTypeIdx, testMethodIdx} from './report.data';
 import { createReadStream, existsSync, readFileSync, unlink, unlinkSync, writeFileSync } from 'fs';
-import { join } from 'path';
 import { createDocument } from './docx-generator/report-document';
 import { Packer } from 'docx';
 import { CreateReportDto, UpdateReportDto } from './dto/report.dto';
@@ -18,19 +17,15 @@ export class ReportService {
     private readonly entityManager: EntityManager,
   ) {}
 
+  getReportFilePath(id: string){
+    return `src/report/generated-docx/${id}.docx`;
+  }
+
   async getAllReport() {
     return this.reportRepository.find({});
   }
 
   async createReport(report: CreateReportDto) {
-    // const product_type = productTypeIdx(report.product_type);
-    // const test_method = testMethodIdx(report.test_method);
-    // const framework = frameworkIdx(report.framework);
-
-    // if (product_type < 0) return;
-    // if (test_method < 0) return;
-    // if (framework < 0) return;
-
     const new_report = this.reportRepository.create({
       id: uuidv4(),
       client_name: report.client_name,
@@ -50,27 +45,25 @@ export class ReportService {
     return this.reportRepository.save(new_report);
   }
 
-  async updateReportDocx(id: string){
-    const report = await this.reportRepository.findOne({
-      where: { id: id, },
-    });
+  async updateReportDocx(report: Report) : Promise<boolean> {
 
     if(!report) return false;
 
-    const reportFilePath = `src/report/generated-docx/${report.id}.docx`;
+    const reportFilePath = this.getReportFilePath(report.id);
 
-    /**
-     * this should be done when creating report or updating report content
-    */
-    try{
-      unlinkSync(reportFilePath);
-      
-      //wait for file actually deleted
-      while(existsSync(reportFilePath)){
-        await new Promise(r => setTimeout(r, 100));
+    //delete old file
+    if(existsSync(reportFilePath)){
+      try{
+        unlinkSync(reportFilePath);
+        
+        //wait for file actually deleted
+        while(existsSync(reportFilePath)){
+          await new Promise(r => setTimeout(r, 100));
+        }
+      } catch {
+        console.log("file not exist");
+        return false;
       }
-    } catch {
-      console.log("file not exist");
     }
 
     const docx = createDocument({
@@ -78,7 +71,7 @@ export class ReportService {
       test_method : `${report.test_method}`,
       product_type : `${report.product_type}`,
       framework : `${report.framework}`,
-      report_date : report.report_date.toISOString(),
+      report_date : this.convertDateToddMMYYID(report.report_date),
       target_address : report.target_address,
       target_type : report.target_type,
       findings : [],
@@ -86,14 +79,17 @@ export class ReportService {
       credential_password : report.credential_password,
     });
 
+    //write new file
     Packer.toBuffer(docx).then((buffer)=>{
       writeFileSync(reportFilePath, buffer);
     });
 
+    //wait for file to actually generate
     while(!existsSync(reportFilePath)){
       await new Promise(r => setTimeout(r, 100));
     }
-    //////////////////////////////////////////////
+    
+    return true;
   }
 
   async downloadReport(id: string) {
@@ -103,19 +99,18 @@ export class ReportService {
 
     if(!report) return 404;
     
-    const reportFilePath = `src/report/generated-docx/${report.id}.docx`;
+    const reportFilePath = this.getReportFilePath(report.id); 
 
-    //DUMMY
+    //DUMMY////////////////////////
     const fileExist = false;
 
     if(!fileExist) {
-      await this.updateReportDocx(report.id);
+      await this.updateReportDocx(report);
     }
+    ////////////////////////////
 
-    const file = readFileSync(join(process.cwd(), reportFilePath));
+    const file = readFileSync(reportFilePath);
     return file;
-    // const file = createReadStream(join(process.cwd(), reportFilePath));
-    // return new StreamableFile(file);
   }
 
   async getReport(id: string) {
@@ -143,5 +138,13 @@ export class ReportService {
   async deleteReport(id: string) {
     const report = await this.getReport(id);
     return this.reportRepository.remove(report);
+  }
+
+  monthListID(){
+    return [ "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" ];
+  }
+  
+  convertDateToddMMYYID(date: Date){
+    return `${date.getDate()} ${this.monthListID()[date.getMonth()]} ${date.getFullYear()}`;
   }
 }

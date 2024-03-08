@@ -5,7 +5,8 @@ import {
     DaftarIsiSection,
     DaftarTabelSection,
     DaftarGambarSection,
-    ConfidentialityStatementSection
+    ConfidentialityStatementSection,
+    ExecutiveSummarySection
 } from './sections';
 import { DocumentData } from './data';
 
@@ -19,7 +20,8 @@ export function createDocument(data : DocumentData) : Document{
             DaftarIsiSection(),
             DaftarTabelSection(),
             DaftarGambarSection(),
-            ConfidentialityStatementSection()
+            ConfidentialityStatementSection(data),
+            ExecutiveSummarySection(data),
         ]
     });
 }

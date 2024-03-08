@@ -1,4 +1,4 @@
-import { Paragraph, TextRun, AlignmentType, HeadingLevel,  } from "docx";
+import { Paragraph, TextRun, AlignmentType, HeadingLevel, ISectionOptions,  } from "docx";
 import { DefaultHeader, DefaultFooter } from "./header-footers";
 import { generateNewParagraphs } from "./utils";
 import { CoverBGImage } from "./images";
@@ -40,7 +40,7 @@ export function DefaultSection(){
  * Cover page
  * @returns {ISectionOptions}
  */
-export function CoverSection(doc : DocumentData){
+export function CoverSection(doc : DocumentData) : ISectionOptions {
     return {
         properties : BasePageProperties(),
         children : [            
@@ -50,7 +50,7 @@ export function CoverSection(doc : DocumentData){
                 alignment : AlignmentType.END,
                 children : [CoverBGImage(),]
             }),
-            ...generateNewParagraphs(15),
+            ...generateNewParagraphs(17),
             new Paragraph({
                 text : "PENETRATION TESTING",
                 style : "coverReportType",
@@ -72,7 +72,7 @@ export function CoverSection(doc : DocumentData){
                 style : "coverReportInfo",
                 alignment : AlignmentType.CENTER,
             }),
-            ...generateNewParagraphs(16),
+            ...generateNewParagraphs(12),
             new Paragraph({
                 children : [new TextRun({
                     text : "WIDYA SECURITY",
@@ -93,7 +93,7 @@ export function CoverSection(doc : DocumentData){
     };
 }
 
-export function DaftarIsiSection(){
+export function DaftarIsiSection() : ISectionOptions {
     return {
         ...DefaultSection(),
         children : [
@@ -106,7 +106,7 @@ export function DaftarIsiSection(){
     };
 }
 
-export function DaftarTabelSection(){
+export function DaftarTabelSection() : ISectionOptions {
     return {
         ...DefaultSection(),
         children : [
@@ -119,7 +119,7 @@ export function DaftarTabelSection(){
     };
 }
 
-export function DaftarGambarSection(){
+export function DaftarGambarSection() : ISectionOptions {
     return {
         ...DefaultSection(),
         children : [
@@ -132,7 +132,7 @@ export function DaftarGambarSection(){
     };
 }
 
-export function ConfidentialityStatementSection(){
+export function ConfidentialityStatementSection(doc : DocumentData) : ISectionOptions {
     //DUMMY
     const revcontents : RevisionHistoryTableContent[] = [
         {
@@ -181,7 +181,7 @@ export function ConfidentialityStatementSection(){
                 heading : HeadingLevel.HEADING_1, 
             }),
             new Paragraph({
-                text : `    Dokumen ini adalah milik eksklusif PT. TEST 8 dan PT Widya Adijaya Nusantara (Widya Security). Dokumen ini berisi informasi hak milik dan rahasia (Confidential). Penggandaan, pendistribusian ulang, atau penggunaan, seluruhnya atau sebagian, dalam bentuk apapun, memerlukan persetujuan PT. TEST 8 dan PT Widya Adijaya Nusantara (Widya Security).`,
+                text : `    Dokumen ini adalah milik eksklusif ${doc.client_name} dan PT Widya Adijaya Nusantara (Widya Security). Dokumen ini berisi informasi hak milik dan rahasia (Confidential). Penggandaan, pendistribusian ulang, atau penggunaan, seluruhnya atau sebagian, dalam bentuk apapun, memerlukan persetujuan ${doc.client_name} dan PT Widya Adijaya Nusantara (Widya Security).`,
                 alignment : AlignmentType.JUSTIFIED,
                 style : "normalIndented"
             }),
@@ -198,11 +198,25 @@ export function ConfidentialityStatementSection(){
             }),
             AuthorDocumentTable(authorcontents),
             new Paragraph({
-                text : "Contact Informationo",
+                text : "Contact Information",
                 alignment : AlignmentType.START,
                 style : "tableHeading"
             }),
             ContactInformationTable(contactcontents),
         ],
     }
+}
+
+
+export function ExecutiveSummarySection(doc: DocumentData) : ISectionOptions {
+    return {
+        ...DefaultSection(),
+        children : [
+            new Paragraph({
+                text : "Executive Summary",
+                alignment : AlignmentType.START,
+                heading : HeadingLevel.HEADING_1, 
+            }),
+        ],
+    };
 }

@@ -1,7 +1,7 @@
 import { ResetPassword } from '@/auth/entities/resetPassword.entity';
 import { Finding } from '@/finding/entities/finding.entity';
-import { Report } from '@/report/entities/Report.entity';
-import { User } from '@/user/entities/User.entity';
+import { Report } from '@/report/entities/report.entity';
+import { User } from '@/user/entities/user.entity';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
