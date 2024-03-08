@@ -2,8 +2,9 @@ import { Paragraph, TextRun, AlignmentType, HeadingLevel, ISectionOptions,  } fr
 import { DefaultHeader, DefaultFooter } from "./header-footers";
 import { generateNewParagraphs } from "./utils";
 import { CoverBGImage } from "./images";
-import { RevisionHistoryTable, AuthorDocumentTable, ContactInformationTable, RevisionHistoryTableContent, AuthorDocumentTableContent, ContactInformationTableContent } from "./tables";
+import { RevisionHistoryTable, AuthorDocumentTable, ContactInformationTable, RevisionHistoryTableContent, AuthorDocumentTableContent, ContactInformationTableContent, ExecutiveSummaryTable, ExecutiveSummaryTableContent, ScopeApplicationTable, ScopeApplicationTableContent } from "./tables";
 import { DocumentData } from "./data";
+import { MyNumbering } from "./numbering";
 const IDKWHATCONSTANT = 555.555556;
 /*
  * ******************************************************************************************************************
@@ -181,7 +182,7 @@ export function ConfidentialityStatementSection(doc : DocumentData) : ISectionOp
                 heading : HeadingLevel.HEADING_1, 
             }),
             new Paragraph({
-                text : `    Dokumen ini adalah milik eksklusif ${doc.client_name} dan PT Widya Adijaya Nusantara (Widya Security). Dokumen ini berisi informasi hak milik dan rahasia (Confidential). Penggandaan, pendistribusian ulang, atau penggunaan, seluruhnya atau sebagian, dalam bentuk apapun, memerlukan persetujuan ${doc.client_name} dan PT Widya Adijaya Nusantara (Widya Security).`,
+                text : `Dokumen ini adalah milik eksklusif ${doc.client_name} dan PT Widya Adijaya Nusantara (Widya Security). Dokumen ini berisi informasi hak milik dan rahasia (Confidential). Penggandaan, pendistribusian ulang, atau penggunaan, seluruhnya atau sebagian, dalam bentuk apapun, memerlukan persetujuan ${doc.client_name} dan PT Widya Adijaya Nusantara (Widya Security).`,
                 alignment : AlignmentType.JUSTIFIED,
                 style : "normalIndented"
             }),
@@ -209,6 +210,12 @@ export function ConfidentialityStatementSection(doc : DocumentData) : ISectionOp
 
 
 export function ExecutiveSummarySection(doc: DocumentData) : ISectionOptions {
+    const content : ExecutiveSummaryTableContent = {
+        critical : 0,
+        high : 2,
+        low : 1,
+        medium : 0,
+    };
     return {
         ...DefaultSection(),
         children : [
@@ -216,7 +223,59 @@ export function ExecutiveSummarySection(doc: DocumentData) : ISectionOptions {
                 text : "Executive Summary",
                 alignment : AlignmentType.START,
                 heading : HeadingLevel.HEADING_1, 
+                numbering : {
+                    level : 0,
+                    reference : MyNumbering.reference,
+                },
             }),
+            new Paragraph({
+                text : "PT Widya Adijaya Nusantara (Widya Security) melakukan kajian celah keamanan sebagai salah satu rangkaian kegiatan untuk menentukan dan mengetahui serangan-serangan yang bisa terjadi terhadap kerentanan yang ada pada sistem dan mengetahui dampak yang diakibatkan yang dilakukan oleh penyerang.",
+                alignment : AlignmentType.JUSTIFIED,
+                style : "normalIndented"
+            }),
+            ...generateNewParagraphs(1),
+            new Paragraph({
+                text : "Berdasarkan pengujian yang telah dilakukan dalam rentang waktu dan ruang lingkup yang telah ditentukan. Penguji menemukan bahwa ada 1 kerentanan keamanan di situs web yang perlu segera diperbaiki sesuai dengan peraturan dan kebijakan internal untuk mengurangi risiko eksploitasi yang dapat membahayakan kerahasiaan, integritas, dan ketersediaan. Berikut ini adalah daftar hasil yang diurutkan berdasarkan tingkat risiko kerentanan.",
+                alignment : AlignmentType.JUSTIFIED,
+                style : "normal"
+            }),
+            ExecutiveSummaryTable(content),
+        ],
+    };
+}
+
+export function ScopeApplicationSection(doc: DocumentData) : ISectionOptions {
+    const content : ScopeApplicationTableContent = {
+        client_name : doc.client_name,
+        approach : doc.product_type,
+        category : doc.target_type,
+        urls : doc.target_address,
+        credential_username : doc.credential_username,
+        credential_password : doc.credential_password
+    }
+    return {
+        ...DefaultSection(),
+        children : [
+            new Paragraph({
+                text : "Scope Application",
+                alignment : AlignmentType.START,
+                heading : HeadingLevel.HEADING_1, 
+                numbering : {
+                    level : 0,
+                    reference : MyNumbering.reference,
+                },
+            }),
+            new Paragraph({
+                text : `Sebelum pengujian, ${doc.client_name} memberi informasi kepada PT Widya Adijaya Nusantara (Widya Security) berupa URL aplikasi web yang digunakan untuk proses pengujian. Cakupan Penetration Testing terbatas pada URL tersebut dan layanan lain yang dijalankannya (yang berhubungan dengan layanan tersebut). Pengujian Penetration Testing dilakukan dengan menggunakan perspektif sebagai penyerang (attacker) yang tidak memiliki informasi sensitif mengenai sistem dan authentikasi pengguna (hak akses) ke sistem dari otoritas pengelola sistem (pendekatan pengujian Grey Box).`,
+                alignment : AlignmentType.JUSTIFIED,
+                style : "normalIndented"
+            }),
+            new Paragraph({
+                text : `Rincian cakupan pengujian tersebut disajikan pada tabel berikut ini:`,
+                alignment : AlignmentType.JUSTIFIED,
+                style : "normalIndented"
+            }),
+            ScopeApplicationTable(content),
         ],
     };
 }

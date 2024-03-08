@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Report } from '@/report/entities/report.entity';
 import { EntityManager, Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
-import {frameworkIdx, productTypeIdx, testMethodIdx} from './report.data';
 import { createReadStream, existsSync, readFileSync, unlink, unlinkSync, writeFileSync } from 'fs';
 import { createDocument } from './docx-generator/report-document';
 import { Packer } from 'docx';
@@ -101,9 +100,9 @@ export class ReportService {
     
     const reportFilePath = this.getReportFilePath(report.id); 
 
-    if(!existsSync(reportFilePath)) {
+    // if(!existsSync(reportFilePath)) {
       await this.updateReportDocx(report);
-    }
+    // }
 
     const file = createReadStream(reportFilePath);
     return new StreamableFile(file);

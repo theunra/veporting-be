@@ -1,10 +1,24 @@
-import { Paragraph, Table, TableRow, TableCell, WidthType} from "docx";
+import { Paragraph, Table, TableRow, TableCell, WidthType, Tab} from "docx";
 
 /**
  * ******************************************************************************************************************
  * Tables
  * ******************************************************************************************************************
  */
+
+export function generateStdTableHeader(headers){
+    return new TableRow({
+        children : headers.map((header) => {
+            return new TableCell({
+                children : [
+                    new Paragraph({
+                        text : header,
+                    })
+                ],
+            });
+        }),
+    });
+}
 
 export interface RevisionHistoryTableContent {
     version : string;
@@ -119,16 +133,117 @@ export function ContactInformationTable(contents : ContactInformationTableConten
     });
 }
 
-export function generateStdTableHeader(headers){
-    return new TableRow({
-        children : headers.map((header) => {
-            return new TableCell({
+export interface ExecutiveSummaryTableContent {
+    critical : number;
+    high : number;
+    medium : number;
+    low : number;
+}
+
+export function ExecutiveSummaryTable(content : ExecutiveSummaryTableContent) : Table{
+    const total = content.critical + content.high + content.medium + content.low;
+
+    return new Table({
+        width : {
+            size : 200 * 45,
+            type : WidthType.DXA,
+        },
+        rows : [
+            //Header
+            generateStdTableHeader(["Critical", "High", "Medium", "Low", "Total"]),
+            //Content
+            new TableRow({
                 children : [
-                    new Paragraph({
-                        text : header,
-                    })
+                    new TableCell({
+                        children : [new Paragraph({text : `${content.critical}`})]
+                    }),
+                    new TableCell({
+                        children : [new Paragraph({text : `${content.high}`})]
+                    }),
+                    new TableCell({
+                        children : [new Paragraph({text : `${content.medium}`})]
+                    }),
+                    new TableCell({
+                        children : [new Paragraph({text : `${content.low}`})]
+                    }),
+                    new TableCell({
+                        children : [new Paragraph({text : `${total}`})]
+                    }),
                 ],
-            });
-        }),
+            }),
+        ]
+    });
+}
+
+export interface ScopeApplicationTableContent {
+    client_name : string;
+    category : string;
+    approach : string;
+    urls : string[];
+    credential_username : string;
+    credential_password : string;
+};
+
+export function ScopeApplicationTable(content : ScopeApplicationTableContent) : Table {
+    return new Table({
+        width : {
+            size : 200 * 45,
+            type : WidthType.DXA,
+        },
+        rows : [
+            new TableRow({
+                children : [
+                    new TableCell({
+                        children : [new Paragraph({text : `Client`})],
+                    }),
+                    new TableCell({
+                        children : [new Paragraph({text : `${content.client_name}`})],
+                    }),
+                ],
+            }),
+            new TableRow({
+                children : [
+                    new TableCell({
+                        children : [new Paragraph({text : `Category`})],
+                    }),
+                    new TableCell({
+                        children : [new Paragraph({text : `${content.category}`})],
+                    }),
+                ],
+            }),
+            new TableRow({
+                children : [
+                    new TableCell({
+                        children : [new Paragraph({text : `Approach`})],
+                    }),
+                    new TableCell({
+                        children : [new Paragraph({text : `${content.approach}`})],
+                    }),
+                ],
+            }),
+            new TableRow({
+                children : [
+                    new TableCell({
+                        children : [new Paragraph({text : `URLs/App`})],
+                    }),
+                    new TableCell({
+                        children : content.urls.map((url) => new Paragraph({text : `${url}`})),
+                    }),
+                ],
+            }),
+            new TableRow({
+                children : [
+                    new TableCell({
+                        children : [new Paragraph({text : `Approach`})],
+                    }),
+                    new TableCell({
+                        children : [
+                            new Paragraph({text : `${content.credential_username}`}),
+                            new Paragraph({text : `${content.credential_password}`})
+                        ],
+                    }),
+                ],
+            }),
+        ]
     });
 }

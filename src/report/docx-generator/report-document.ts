@@ -6,9 +6,11 @@ import {
     DaftarTabelSection,
     DaftarGambarSection,
     ConfidentialityStatementSection,
-    ExecutiveSummarySection
+    ExecutiveSummarySection,
+    ScopeApplicationSection
 } from './sections';
 import { DocumentData } from './data';
+import { MyNumbering } from './numbering';
 
 export function createDocument(data : DocumentData) : Document{
     return new Document({
@@ -22,6 +24,12 @@ export function createDocument(data : DocumentData) : Document{
             DaftarGambarSection(),
             ConfidentialityStatementSection(data),
             ExecutiveSummarySection(data),
-        ]
+            ScopeApplicationSection(data),
+        ],
+        numbering : {
+            config : [
+                MyNumbering
+            ],
+        },
     });
 }
