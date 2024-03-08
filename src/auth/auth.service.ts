@@ -27,7 +27,6 @@ export class AuthService {
   }
   async validateUser(auth: SignInDto) {
     const user = await this.userService.findWhereUsername(auth.username);
-
     if (!user) throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
 
     const compare_res = await bcrypt.compare(auth.password, user.pasw_hash);
@@ -74,8 +73,25 @@ export class AuthService {
 
   async resetPassword(token: string, newPassword: string) {
     const user = await this.findWhereResetPasswordToken(token);
-    if (!user) throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
-    // return await this.userService.resetPassword(user, newPassword);
+    if (!user)
+      throw new HttpException('Token Is Invalid', HttpStatus.NOT_FOUND);
+
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const passw_hash = await bcrypt.hash(newPassword, salt);
+
+    await this.userService.updateUser(user.user_id, {
+      pasw_hash: passw_hash,
+      pasw_salt: salt,
+    });
+
+    await this.resetPasswordRepository.delete({
+      token,
+    });
+
+    return {
+      message: 'Password Reset',
+    };
   }
 
   async sendEmail(email: string, token: string) {
