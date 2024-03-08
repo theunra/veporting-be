@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { UserService } from '@/user/user.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
-import { ResetPassword } from './entities/ResetPassword.entity';
+import { ResetPassword } from './entities/resetPassword.entity';
 import { MailerService } from '@nestjs-modules/mailer';
 import 'dotenv/config';
 

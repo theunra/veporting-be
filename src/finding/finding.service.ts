@@ -3,7 +3,7 @@ import { CreateFindingDto } from './dto/create-finding.dto';
 import { UpdateFindingDto } from './dto/update-finding.dto';
 import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
-import { Finding } from './entities/Finding.entity';
+import { Finding } from './entities/finding.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()

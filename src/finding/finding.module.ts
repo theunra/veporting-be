@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { FindingService } from './finding.service';
 import { FindingController } from './finding.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Finding } from './entities/Finding.entity';
+import { Finding } from './entities/finding.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Finding])],

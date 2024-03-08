@@ -1,5 +1,5 @@
-import { ResetPassword } from '@/auth/entities/ResetPassword.entity';
-import { Finding } from '@/finding/entities/Finding.entity';
+import { ResetPassword } from '@/auth/entities/resetPassword.entity';
+import { Finding } from '@/finding/entities/finding.entity';
 import { Report } from '@/report/entities/Report.entity';
 import { User } from '@/user/entities/User.entity';
 import { Module } from '@nestjs/common';
