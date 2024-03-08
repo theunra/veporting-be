@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryColumn, ManyToOne } from 'typeorm';
-import { Report } from '@/report/entities/Report.entity';
+import { Report } from '@/report/entities/report.entity';
 
 @Entity('finding')
 export class Finding {
