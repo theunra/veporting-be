@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Header, Param, Post, Put, Res, Streamabl
 import { ReportService } from './report.service';
 import { CreateReportDto, UpdateReportDto } from 'src/report/dto/report.dto';
 import { Response } from 'express';
+import { createReadStream } from 'fs';
 
 @Controller('report')
 export class ReportController {
@@ -35,11 +36,8 @@ export class ReportController {
   async downloadReport(
       @Param('id') id: string,
       @Res({ passthrough : true }) res: Response,
-  ){
-      return {
-        message: 'success',
-        data: await this.reportService.downloadReport(id),
-      };
+  ) : Promise<StreamableFile | number>{
+      return await this.reportService.downloadReport(id);
   }
 
   @Put(':id')

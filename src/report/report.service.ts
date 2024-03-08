@@ -101,16 +101,12 @@ export class ReportService {
     
     const reportFilePath = this.getReportFilePath(report.id); 
 
-    //DUMMY////////////////////////
-    const fileExist = false;
-
-    if(!fileExist) {
+    if(!existsSync(reportFilePath)) {
       await this.updateReportDocx(report);
     }
-    ////////////////////////////
 
-    const file = readFileSync(reportFilePath);
-    return file;
+    const file = createReadStream(reportFilePath);
+    return new StreamableFile(file);
   }
 
   async getReport(id: string) {
