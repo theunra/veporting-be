@@ -41,8 +41,10 @@ export class FindingService {
 
   async update(id: string, updateFindingDto: UpdateFindingDto) {
     try {
-      const data = await this.findingRepository.update(id, updateFindingDto);
-      return data;
+      await this.findingRepository.update(id, updateFindingDto);
+      return await this.findingRepository.findOne({
+        where: { id },
+      });
     } catch (error) {
       throw new BadRequestException(error);
     }
@@ -50,8 +52,7 @@ export class FindingService {
 
   async remove(id: string) {
     try {
-      const data = await this.findingRepository.delete(id);
-      return data;
+      await this.findingRepository.delete(id);
     } catch (error) {
       throw new BadRequestException(error);
     }

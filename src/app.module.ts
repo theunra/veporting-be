@@ -12,6 +12,7 @@ import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
 import { join } from 'path';
 import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
       ttl: 15,
       isGlobal: true,
     }),
+    EventEmitterModule.forRoot(),
     ModelModule,
     ReportModule,
     UserModule,

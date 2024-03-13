@@ -18,19 +18,19 @@ export class Finding {
   @Column('enum', { enum: ['open', 'closed'] })
   status: string;
 
-  @Column('varchar')
+  @Column('varchar', { nullable: true })
   target: string;
 
-  @Column('varchar')
+  @Column('varchar', { nullable: true })
   description: string;
 
-  @Column('jsonb')
+  @Column('jsonb', { array: false, nullable: true })
   upload_poc: Record<string, any>;
 
-  @Column('varchar')
+  @Column('varchar', { array: true, nullable: true })
   recommendation: string;
 
-  @Column('varchar')
+  @Column('varchar', { array: true, nullable: true })
   reference: string;
 
   @ManyToOne(() => Report, (report) => report.findings)

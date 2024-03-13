@@ -3,9 +3,9 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { FindingService } from './finding.service';
 import { CreateFindingDto } from './dto/create-finding.dto';
@@ -39,7 +39,7 @@ export class FindingController {
     };
   }
 
-  @Patch(':id')
+  @Put(':id')
   async update(
     @Param('id') id: string,
     @Body() updateFindingDto: UpdateFindingDto,
@@ -52,9 +52,9 @@ export class FindingController {
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
+    await this.findingService.remove(id);
     return {
       message: 'success',
-      data: await this.findingService.remove(id),
     };
   }
 }

@@ -35,11 +35,11 @@ export class CreateFindingDto {
   @IsNotEmpty()
   upload_poc: Record<string, any>;
 
-  @IsString()
+  @IsArray()
   @IsNotEmpty()
   recommendation: string;
 
-  @IsString()
+  @IsArray()
   @IsNotEmpty()
   reference: string;
 
