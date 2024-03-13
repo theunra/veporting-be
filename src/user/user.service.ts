@@ -4,7 +4,6 @@ import { Repository, EntityManager } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
-
 @Injectable()
 export class UserService {
   constructor(
