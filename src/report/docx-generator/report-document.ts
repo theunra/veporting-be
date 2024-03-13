@@ -7,10 +7,12 @@ import {
     DaftarGambarSection,
     ConfidentialityStatementSection,
     ExecutiveSummarySection,
-    ScopeApplicationSection
+    ScopeApplicationSection,
+    MethodologySection,
+    SummaryOfFindingsSection
 } from './sections';
 import { DocumentData } from './data';
-import { MyNumbering } from './numbering';
+import { Point0Numbering } from './numbering';
 
 export function createDocument(data : DocumentData) : Document{
     return new Document({
@@ -25,10 +27,12 @@ export function createDocument(data : DocumentData) : Document{
             ConfidentialityStatementSection(data),
             ExecutiveSummarySection(data),
             ScopeApplicationSection(data),
+            MethodologySection(data),
+            SummaryOfFindingsSection(data),
         ],
         numbering : {
             config : [
-                MyNumbering
+                Point0Numbering
             ],
         },
     });

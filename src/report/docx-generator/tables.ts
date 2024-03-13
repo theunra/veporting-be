@@ -247,3 +247,32 @@ export function ScopeApplicationTable(content : ScopeApplicationTableContent) : 
         ]
     });
 }
+
+export enum VulnerabilityAnalysisCVSS {
+    CRITICAL
+};
+
+export enum VulnerabilityAnalysisStatus {
+    CLOSED,
+    OPEN
+}
+
+export interface VulnerabilityAnalysisTableContent{
+    finding : string;
+    severity : number;
+    cvss : VulnerabilityAnalysisCVSS;
+    status : VulnerabilityAnalysisStatus;
+}
+export function VulnerabilityAnalysisTable(content : VulnerabilityAnalysisTableContent[]) : Table {
+    return new Table({
+        width : {
+            size : 200 * 45,
+            type : WidthType.DXA,
+        },
+        rows : [
+            //Header
+            generateStdTableHeader(["No", "Finding", "Severity", "CVSS", "Status"]),
+            //Content
+        ],
+    });
+}

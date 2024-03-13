@@ -4,7 +4,7 @@ import { generateNewParagraphs } from "./utils";
 import { CoverBGImage } from "./images";
 import { RevisionHistoryTable, AuthorDocumentTable, ContactInformationTable, RevisionHistoryTableContent, AuthorDocumentTableContent, ContactInformationTableContent, ExecutiveSummaryTable, ExecutiveSummaryTableContent, ScopeApplicationTable, ScopeApplicationTableContent } from "./tables";
 import { DocumentData } from "./data";
-import { MyNumbering } from "./numbering";
+import { Point0Numbering } from "./numbering";
 const IDKWHATCONSTANT = 555.555556;
 /*
  * ******************************************************************************************************************
@@ -225,7 +225,7 @@ export function ExecutiveSummarySection(doc: DocumentData) : ISectionOptions {
                 heading : HeadingLevel.HEADING_1, 
                 numbering : {
                     level : 0,
-                    reference : MyNumbering.reference,
+                    reference : Point0Numbering.reference,
                 },
             }),
             new Paragraph({
@@ -262,7 +262,7 @@ export function ScopeApplicationSection(doc: DocumentData) : ISectionOptions {
                 heading : HeadingLevel.HEADING_1, 
                 numbering : {
                     level : 0,
-                    reference : MyNumbering.reference,
+                    reference : Point0Numbering.reference,
                 },
             }),
             new Paragraph({
@@ -276,6 +276,75 @@ export function ScopeApplicationSection(doc: DocumentData) : ISectionOptions {
                 style : "normalIndented"
             }),
             ScopeApplicationTable(content),
+        ],
+    };
+}
+
+export function MethodologySection(doc: DocumentData) : ISectionOptions {
+    return {
+        ...DefaultSection(),
+        children : [
+            new Paragraph({
+                text : "Methodology",
+                alignment : AlignmentType.START,
+                heading : HeadingLevel.HEADING_1, 
+                numbering : {
+                    level : 0,
+                    reference : Point0Numbering.reference,
+                },
+            }),
+            new Paragraph({
+                text : `Pengujian pada web aplikasi menggunakan Open Source Security Testing Methodology Manual (OSSTMM) dan Open Web Application Security Project (OWASP) sebagai acuan pengujian, tetapi tidak terbatas pada OWASP Top 10 Web Application Security & API Security. yang dijelaskan pada diagram berikut.`,
+                alignment : AlignmentType.JUSTIFIED,
+                style : "normalIndented"
+            }),
+            new Paragraph({
+                text : `Kerentanan yang ditemukan dalam pengujian akan dinilai sebagai beberapa tingkat risiko. Tabel berikut menjelaskan tingkat risiko berikut sebagai acuan penilaian risiko.`,
+                alignment : AlignmentType.JUSTIFIED,
+                style : "normalIndented"
+            }),
+            new Paragraph({
+                text : `Alat yang digunakan dalam pengujian ini adalah alat umum dan enterprise, seperti Burp Suite Professional, Nessus Professional, Acunetix dan alat sumber terbuka diantaranya adalah OWASP ZAP, SQLMAP, dan WFUZZ. pada tahap ini dilakukan secara eksternal melalui jaringan publik (internet) dengan menggunakan metode pengujian Grey Box Testing.`,
+                alignment : AlignmentType.JUSTIFIED,
+                style : "normalIndented"
+            }),
+        ],
+    };
+}
+
+export function SummaryOfFindingsSection(doc: DocumentData) : ISectionOptions {
+    return {
+        ...DefaultSection(),
+        children : [
+            new Paragraph({
+                text : "Summary Of Findings",
+                alignment : AlignmentType.START,
+                heading : HeadingLevel.HEADING_1, 
+                numbering : {
+                    level : 0,
+                    reference : Point0Numbering.reference,
+                },
+            }),
+            new Paragraph({
+                text : "Vulnerability Analysis",
+                alignment : AlignmentType.START,
+                heading : HeadingLevel.HEADING_2, 
+                numbering : {
+                    level : 1,
+                    reference : Point0Numbering.reference,
+                },
+            }),
+            new Paragraph({
+                text : `Berdasarkan pengujian yang telah dilakukan, pada ruang lingkup yang telah ditentukan. Berikut ditampilkan daftar temuan yang diurutkan berdasarkan tingkatan risiko kerentanan sebagai berikut.`,
+                alignment : AlignmentType.JUSTIFIED,
+                style : "normalIndented"
+            }),
+            new Paragraph({
+                text : `Berdasarkan daftar kerentanan yang ditemukan, berikut tampilan grafik temuan kerentanan berdasarkan tingkatan risiko sebagai informasi mengenai besaran risiko setiap website atau aplikasi secara utuh.`,
+                alignment : AlignmentType.JUSTIFIED,
+                style : "normalIndented"
+            }),
+
         ],
     };
 }
