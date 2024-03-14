@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Header, Param, Post, Put, Res, StreamableFile } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, Res, StreamableFile } from '@nestjs/common';
 import { ReportService } from './report.service';
 import { CreateReportDto, UpdateReportDto } from 'src/report/dto/report.dto';
 import { Response } from 'express';
@@ -14,6 +14,17 @@ export class ReportController {
       message: 'success',
       data: await this.reportService.getAllReport(),
     };
+  }
+
+  @Get('count')
+  async getReportCount(
+      @Query('startDate') startDate: string,
+      @Query('endDate') endDate: string,
+  ){
+    return {
+      message: 'success',
+      data: await this.reportService.getReportCountWhereCreatedAtIsBetween(new Date(startDate), new Date(endDate))
+    }
   }
 
   @Get(':id')

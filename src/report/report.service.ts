@@ -1,7 +1,7 @@
 import { Injectable, StreamableFile } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Report } from '@/report/entities/report.entity';
-import { EntityManager, Repository } from 'typeorm';
+import { Between, EntityManager, FindOperator, Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { createReadStream, existsSync, readFileSync, unlink, unlinkSync, writeFileSync } from 'fs';
 import { createDocument } from './docx-generator/report-document';
@@ -112,6 +112,14 @@ export class ReportService {
     return this.reportRepository.findOne({
       where: {
         id: id,
+      },
+    });
+  }
+
+  async getReportCountWhereCreatedAtIsBetween(startDate: Date, endDate: Date) {
+    return this.reportRepository.findAndCount({
+      where : {
+        created_at : Between(startDate, endDate),
       },
     });
   }
