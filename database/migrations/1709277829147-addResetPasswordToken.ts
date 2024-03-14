@@ -2,6 +2,8 @@ import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class AddResetPasswordToken1709277829147 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    if(await queryRunner.hasTable('reset_password')) return;
+
     await queryRunner.createTable(
       new Table({
         name: 'reset_password',

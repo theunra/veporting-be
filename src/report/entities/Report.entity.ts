@@ -1,6 +1,6 @@
 import { Finding } from '@/finding/entities/finding.entity';
 import { Column, Entity, OneToOne, PrimaryColumn } from 'typeorm';
-import { ProductType, Framework, TestMethod } from '../report.data';
+import { ProductType, Framework, TestMethod, ReportStatus } from '../report.data';
 
 @Entity('report')
 export class Report {
@@ -24,6 +24,9 @@ export class Report {
 
   @Column('enum', { enum: Framework })
   framework: string;
+
+  @Column('enum', { enum: ReportStatus })
+  status: string;
 
   @Column('varchar')
   target_type: string;

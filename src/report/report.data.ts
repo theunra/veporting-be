@@ -11,6 +11,11 @@ export enum Framework {
   CWE = 'cwe',
 }
 
+export enum ReportStatus {
+  ONGOING = 'ongoing',
+  DONE = 'done'
+}
+
 export function productTypeIdx(product_type: string) {
   const vals = Object.values(ProductType);
   return vals.findIndex((type) => type == product_type);
