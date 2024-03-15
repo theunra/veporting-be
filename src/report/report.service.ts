@@ -7,6 +7,7 @@ import { createReadStream, existsSync, readFileSync, unlink, unlinkSync, writeFi
 import { createDocument } from './docx-generator/report-document';
 import { Packer } from 'docx';
 import { CreateReportDto, UpdateReportDto } from './dto/report.dto';
+import { ReportStatus } from './report.data';
 
 @Injectable()
 export class ReportService {
@@ -37,6 +38,7 @@ export class ReportService {
       end_date: new Date(report.end_date),
       credential_username: report.credential_username,
       credential_password: report.credential_password,
+      status : ReportStatus.ONGOING,
       created_at: new Date(),
       updated_at: new Date(),
     });
@@ -117,11 +119,21 @@ export class ReportService {
   }
 
   async getReportCountWhereCreatedAtIsBetween(startDate: Date, endDate: Date) {
-    return this.reportRepository.findAndCount({
+    const reports = await this.reportRepository.find({
       where : {
         created_at : Between(startDate, endDate),
       },
     });
+
+    if(!reports) return;
+
+    const report_ongoing_count = reports.filter((report) => report.status == ReportStatus.ONGOING);
+    const report_done_count = reports.filter((report) => report.status == ReportStatus.DONE);
+
+    return {
+      ongoing : report_ongoing_count,
+      done : report_done_count,
+    }
   }
 
   async updateReport(id: string, reportUpdate: UpdateReportDto) {
