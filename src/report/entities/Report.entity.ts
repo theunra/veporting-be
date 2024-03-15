@@ -11,7 +11,7 @@ export class Report {
   client_name: string;
 
   @Column('enum', { enum: ProductType })
-  product_type: string;
+  product_type: string; 
 
   @Column('timestamptz')
   report_date: Date;
