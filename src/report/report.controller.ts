@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, Res, StreamableFile } from '@nestjs/common';
+import { Body, Controller, Delete, Get, UseGuards, Param, Post, Put, Query, Res, StreamableFile } from '@nestjs/common';
 import { ReportService } from './report.service';
 import { CreateReportDto, UpdateReportDto } from 'src/report/dto/report.dto';
 import { Response } from 'express';
 import { createReadStream } from 'fs';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('report')
 export class ReportController {
   constructor(private readonly reportService: ReportService) {}
