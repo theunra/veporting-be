@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, UseGuards, Param, Post, Put, Query, Res, StreamableFile } from '@nestjs/common';
+import { Body, Controller, Delete, Get, UseGuards, Param, Post, Put, Query, Res, StreamableFile, Request } from '@nestjs/common';
 import { ReportService } from './report.service';
 import { CreateReportDto, UpdateReportDto } from 'src/report/dto/report.dto';
 import { Response } from 'express';
@@ -11,7 +11,9 @@ export class ReportController {
   constructor(private readonly reportService: ReportService) {}
 
   @Get('all')
-  async getAllReport() {
+  async getAllReport(
+    @Request() req
+  ) {
     return {
       message: 'success',
       data: await this.reportService.getAllReport(),
@@ -38,10 +40,13 @@ export class ReportController {
   }
 
   @Post('create')
-  async createReport(@Body() report: CreateReportDto) {
+  async createReport(
+    @Body() report: CreateReportDto,
+    @Request() req,
+    ) {
     return {
       message: 'success',
-      data: await this.reportService.createReport(report),
+      data: await this.reportService.createReport(report, req.user),
     };
   }
   

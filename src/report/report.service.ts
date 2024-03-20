@@ -8,6 +8,7 @@ import { createDocument } from './docx-generator/report-document';
 import { Packer } from 'docx';
 import { CreateReportDto, UpdateReportDto } from './dto/report.dto';
 import { ReportStatus } from './report.data';
+import { UserService } from '@/user/user.service';
 
 @Injectable()
 export class ReportService {
@@ -15,6 +16,8 @@ export class ReportService {
     @InjectRepository(Report)
     private reportRepository: Repository<Report>,
     private readonly entityManager: EntityManager,
+
+    private userService: UserService,
   ) {}
 
   getReportFilePath(id: string){
@@ -22,10 +25,28 @@ export class ReportService {
   }
 
   async getAllReport() {
-    return this.reportRepository.find({});
+    return this.reportRepository.find({
+      select: {
+        id: true,
+        client_name: true,
+        product_type: true,
+        end_date: true,
+        status: true,
+        user: {
+          name: true,
+        }
+      },
+      relations: {
+        user: true
+      }
+    });
   }
 
-  async createReport(report: CreateReportDto) {
+  async createReport(report: CreateReportDto, userReq: any) {
+    const user = await this.userService.findWhereUsername(userReq.username);
+
+    if(!user) return null;
+
     const new_report = this.reportRepository.create({
       id: uuidv4(),
       client_name: report.client_name,
@@ -41,6 +62,7 @@ export class ReportService {
       status : ReportStatus.ONGOING,
       created_at: new Date(),
       updated_at: new Date(),
+      user: user,
     });
 
     return this.reportRepository.save(new_report);
@@ -111,10 +133,14 @@ export class ReportService {
   }
 
   async getReport(id: string) {
-    return this.reportRepository.findOne({
+    return this.reportRepository.find({
       where: {
         id: id,
       },
+      loadRelationIds: true,
+      relations: {
+        user: true,
+      }
     });
   }
 

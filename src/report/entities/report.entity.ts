@@ -1,6 +1,7 @@
 import { Finding } from '@/finding/entities/finding.entity';
-import { Column, Entity, OneToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToOne, PrimaryColumn } from 'typeorm';
 import { ProductType, Framework, TestMethod, ReportStatus } from '../report.data';
+import { User } from '@/user/entities/user.entity';
 
 @Entity('report')
 export class Report {
@@ -48,4 +49,7 @@ export class Report {
 
   @OneToOne(() => Finding, (finding) => finding.report)
   findings: Finding[];
+
+  @ManyToOne(() => User, (user) => user.reports)
+  user: User
 }
