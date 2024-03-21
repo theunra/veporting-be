@@ -2,7 +2,7 @@ import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class AddReports1708503297180 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    if(await queryRunner.hasTable('report')) return;
+    if (await queryRunner.hasTable('report')) return;
 
     await queryRunner.createTable(
       new Table({

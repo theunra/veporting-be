@@ -13,7 +13,7 @@ export enum Framework {
 
 export enum ReportStatus {
   ONGOING = 'ongoing',
-  DONE = 'done'
+  DONE = 'done',
 }
 
 export function productTypeIdx(product_type: string) {

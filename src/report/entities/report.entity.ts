@@ -1,6 +1,11 @@
 import { Finding } from '@/finding/entities/finding.entity';
 import { Column, Entity, ManyToOne, OneToOne, PrimaryColumn } from 'typeorm';
-import { ProductType, Framework, TestMethod, ReportStatus } from '../report.data';
+import {
+  ProductType,
+  Framework,
+  TestMethod,
+  ReportStatus,
+} from '../report.data';
 import { User } from '@/user/entities/user.entity';
 
 @Entity('report')
@@ -12,7 +17,7 @@ export class Report {
   client_name: string;
 
   @Column('enum', { enum: ProductType })
-  product_type: string; 
+  product_type: string;
 
   @Column('timestamptz')
   report_date: Date;
@@ -51,5 +56,5 @@ export class Report {
   findings: Finding[];
 
   @ManyToOne(() => User, (user) => user.reports)
-  user: User
+  user: User;
 }

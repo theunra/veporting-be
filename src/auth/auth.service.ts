@@ -95,13 +95,12 @@ export class AuthService {
   }
 
   async sendEmail(email: string, token: string) {
-    const url = `${process.env.BASE_URL}/reset-password/${token}`;
     await this.mailerService.sendMail({
       to: email,
       subject: 'Reset Password',
       template: 'reset-password',
       context: {
-        url,
+        token,
       },
     });
 

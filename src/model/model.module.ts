@@ -1,3 +1,4 @@
+import { ActivityLog } from '@/activity_log/entities/activity_log.entity';
 import { ResetPassword } from '@/auth/entities/resetPassword.entity';
 import { Finding } from '@/finding/entities/finding.entity';
 import { Report } from '@/report/entities/report.entity';
@@ -18,7 +19,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         database: configService.getOrThrow('DB_NAME'),
         synchronize: configService.getOrThrow('DB_SYNC'),
         // entities: ['@/**/*.entity{.ts,.js}'],
-        entities: [Report, Finding, User, ResetPassword],
+        entities: [Report, Finding, User, ResetPassword, ActivityLog],
         // migrations: [__dirname + '/migrations/*'],
       }),
       inject: [ConfigService],

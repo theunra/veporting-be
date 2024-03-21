@@ -1,5 +1,6 @@
+import { ActivityLog } from '@/activity_log/entities/activity_log.entity';
 import { Report } from '@/report/entities/report.entity';
-import { Column, Entity, OneToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -24,5 +25,8 @@ export class User {
   pasw_salt: string;
 
   @OneToOne(() => Report, (report) => report.user)
-  reports: Report[]
+  reports: Report[];
+
+  @OneToMany(() => ActivityLog, (activityLog) => activityLog.user)
+  activity_logs: ActivityLog[];
 }
