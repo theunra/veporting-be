@@ -7,13 +7,13 @@ export class ReportToFindingRelations1708503448867
   transaction?: boolean;
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.getTable('finding').then(async (table) => {
+    await queryRunner.getTable('findings').then(async (table) => {
       if (
         !table.foreignKeys.find(
           (fk) => fk.columnNames.indexOf('reportId') !== -1,
         )
       ) {
-        await queryRunner.createForeignKeys('finding', [
+        await queryRunner.createForeignKeys('findings', [
           new TableForeignKey({
             columnNames: ['reportId'],
             referencedColumnNames: ['id'],
@@ -26,6 +26,6 @@ export class ReportToFindingRelations1708503448867
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('finding', 'reportId');
+    await queryRunner.dropForeignKey('findings', 'reportId');
   }
 }

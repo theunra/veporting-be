@@ -2,11 +2,11 @@ import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class AddResetPasswordToken1709277829147 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    if(await queryRunner.hasTable('reset_password')) return;
+    if (await queryRunner.hasTable('reset_passwords')) return;
 
     await queryRunner.createTable(
       new Table({
-        name: 'reset_password',
+        name: 'reset_passwords',
         columns: [
           {
             name: 'id',
@@ -44,6 +44,6 @@ export class AddResetPasswordToken1709277829147 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('reset_password');
+    await queryRunner.dropTable('reset_passwords');
   }
 }

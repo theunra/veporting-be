@@ -2,10 +2,10 @@ import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
 export class AddStatusInReport1710392610968 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.getTable('report').then(async (table) => {
+    await queryRunner.getTable('reports').then(async (table) => {
       if (!table.columns.find((column) => column.name === 'status')) {
         await queryRunner.addColumn(
-          'report',
+          'reports',
           new TableColumn({
             name: 'status',
             type: 'enum',
@@ -15,7 +15,7 @@ export class AddStatusInReport1710392610968 implements MigrationInterface {
         );
 
         await queryRunner.addColumn(
-          'report',
+          'reports',
           new TableColumn({
             name: 'userId',
             type: 'uuid',
@@ -26,13 +26,13 @@ export class AddStatusInReport1710392610968 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.getTable('report').then(async (table) => {
+    await queryRunner.getTable('reports').then(async (table) => {
       if (table.columns.find((column) => column.name === 'status')) {
-        await queryRunner.dropColumn('report', 'status');
+        await queryRunner.dropColumn('reports', 'status');
       }
 
       if (table.columns.find((column) => column.name === 'userId')) {
-        await queryRunner.dropColumn('report', 'userId');
+        await queryRunner.dropColumn('reports', 'userId');
       }
     });
   }

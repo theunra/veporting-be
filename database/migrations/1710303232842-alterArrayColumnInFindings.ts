@@ -4,7 +4,7 @@ export class AlterArrayColumnInFindings1710303232842
   implements MigrationInterface
 {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.getTable('finding').then(async (table) => {
+    await queryRunner.getTable('findings').then(async (table) => {
       await queryRunner.changeColumns(table, [
         {
           oldColumn: table.findColumnByName('reference'),
@@ -29,7 +29,7 @@ export class AlterArrayColumnInFindings1710303232842
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.getTable('finding').then(async (table) => {
+    await queryRunner.getTable('findings').then(async (table) => {
       await queryRunner.changeColumns(table, [
         {
           oldColumn: table.findColumnByName('reference'),

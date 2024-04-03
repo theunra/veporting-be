@@ -4,11 +4,11 @@ export class AddFindings1708502654826 implements MigrationInterface {
   name?: string;
   transaction?: boolean;
   public async up(queryRunner: QueryRunner): Promise<void> {
-    if(await queryRunner.hasTable('finding')) return;
-    
+    if (await queryRunner.hasTable('finding')) return;
+
     await queryRunner.createTable(
       new Table({
-        name: 'finding',
+        name: 'findings',
         columns: [
           {
             name: 'id',

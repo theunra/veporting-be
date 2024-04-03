@@ -9,7 +9,7 @@ export class AddActivityLogTable1710993909774 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'activity_log',
+        name: 'activity_logs',
         columns: [
           {
             name: 'id',
@@ -37,7 +37,7 @@ export class AddActivityLogTable1710993909774 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      'activity_log',
+      'activity_logs',
       new TableForeignKey({
         columnNames: ['user_id'],
         referencedColumnNames: ['id'],
@@ -48,6 +48,6 @@ export class AddActivityLogTable1710993909774 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('activity_log');
+    await queryRunner.dropTable('activity_logs');
   }
 }

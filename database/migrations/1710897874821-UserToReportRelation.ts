@@ -9,16 +9,16 @@ export class UserToReportRelation1710897874821 implements MigrationInterface {
   });
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.getTable('report').then(async (table) => {
+    await queryRunner.getTable('reports').then(async (table) => {
       if (
         !table.foreignKeys.find((fk) => fk.columnNames.indexOf('userId') !== -1)
       ) {
-        await queryRunner.createForeignKeys('report', [this.foreignKey]);
+        await queryRunner.createForeignKeys('reports', [this.foreignKey]);
       }
     });
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('report', this.foreignKey);
+    await queryRunner.dropForeignKey('reports', this.foreignKey);
   }
 }

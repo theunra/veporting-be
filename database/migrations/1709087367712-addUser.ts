@@ -3,11 +3,11 @@ import { Table } from 'typeorm/schema-builder/table/Table';
 
 export class AddUser1709087367712 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    if(await queryRunner.hasTable('user')) return;
+    if (await queryRunner.hasTable('user')) return;
 
     await queryRunner.createTable(
       new Table({
-        name: 'user',
+        name: 'users',
         columns: [
           {
             name: 'id',
@@ -45,6 +45,6 @@ export class AddUser1709087367712 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('user');
+    await queryRunner.dropTable('users');
   }
 }
