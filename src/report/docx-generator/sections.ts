@@ -2,7 +2,7 @@ import { Paragraph, TextRun, AlignmentType, HeadingLevel, ISectionOptions,  } fr
 import { DefaultHeader, DefaultFooter } from "./header-footers";
 import { generateNewParagraphs } from "./utils";
 import { CoverBGImage } from "./images";
-import { RevisionHistoryTable, AuthorDocumentTable, ContactInformationTable, RevisionHistoryTableContent, AuthorDocumentTableContent, ContactInformationTableContent, ExecutiveSummaryTable, ExecutiveSummaryTableContent, ScopeApplicationTable, ScopeApplicationTableContent } from "./tables";
+import { RevisionHistoryTable, AuthorDocumentTable, ContactInformationTable, RevisionHistoryTableContent, AuthorDocumentTableContent, ContactInformationTableContent, ExecutiveSummaryTable, ExecutiveSummaryTableContent, ScopeApplicationTable, ScopeApplicationTableContent, VulnerabilityAnalysisTable, VulnerabilityAnalysisTableContent, VulnerabilityAnalysisCVSS, VulnerabilityAnalysisStatus, FindingVulnerabilitiesTable, FindingVulnerabilitiesTableContent } from "./tables";
 import { DocumentData } from "./data";
 import { Point0Numbering } from "./numbering";
 const IDKWHATCONSTANT = 555.555556;
@@ -313,6 +313,15 @@ export function MethodologySection(doc: DocumentData) : ISectionOptions {
 }
 
 export function SummaryOfFindingsSection(doc: DocumentData) : ISectionOptions {
+    const content : VulnerabilityAnalysisTableContent[] = [
+        {
+            finding : "Broken Authentication (Improper Restriction of Excessive Authentication Attempts)",
+            severity : 9,
+            cvss : VulnerabilityAnalysisCVSS.CRITICAL,
+            status : VulnerabilityAnalysisStatus.OPEN
+        },
+    ];
+
     return {
         ...DefaultSection(),
         children : [
@@ -339,12 +348,55 @@ export function SummaryOfFindingsSection(doc: DocumentData) : ISectionOptions {
                 alignment : AlignmentType.JUSTIFIED,
                 style : "normalIndented"
             }),
+            VulnerabilityAnalysisTable(content),
             new Paragraph({
                 text : `Berdasarkan daftar kerentanan yang ditemukan, berikut tampilan grafik temuan kerentanan berdasarkan tingkatan risiko sebagai informasi mengenai besaran risiko setiap website atau aplikasi secara utuh.`,
                 alignment : AlignmentType.JUSTIFIED,
                 style : "normalIndented"
             }),
 
+        ],
+    };
+}
+
+export function FindingVulnerabilities(doc: DocumentData) : ISectionOptions {
+    const content : FindingVulnerabilitiesTableContent = {
+        description: "",
+        evidence_image_srcs: [],
+        impacts: [],
+        recommendations: [],
+        references: [],
+        responses: [],
+        target_systems: [],
+        vulnerability_analysis: {
+            finding : "Broken Authentication (Improper Restriction of Excessive Authentication Attempts)",
+            severity : 9,
+            cvss : VulnerabilityAnalysisCVSS.CRITICAL,
+            status : VulnerabilityAnalysisStatus.OPEN
+        },
+    };
+    return {
+        ...DefaultSection(),
+        children: [
+            new Paragraph({
+                text : "Finding Vulnerabilities",
+                alignment : AlignmentType.START,
+                heading : HeadingLevel.HEADING_1, 
+                numbering : {
+                    level : 0,
+                    reference : Point0Numbering.reference,
+                },
+            }),
+            new Paragraph({
+                text : "Broken Authentication (Improper Restriction of Excessive Authentication Attempts)",
+                alignment : AlignmentType.START,
+                heading : HeadingLevel.HEADING_2, 
+                numbering : {
+                    level : 1,
+                    reference : Point0Numbering.reference,
+                },
+            }),
+            FindingVulnerabilitiesTable(content),
         ],
     };
 }

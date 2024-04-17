@@ -9,7 +9,8 @@ import {
     ExecutiveSummarySection,
     ScopeApplicationSection,
     MethodologySection,
-    SummaryOfFindingsSection
+    SummaryOfFindingsSection,
+    FindingVulnerabilities
 } from './sections';
 import { DocumentData } from './data';
 import { Point0Numbering } from './numbering';
@@ -29,6 +30,7 @@ export function createDocument(data : DocumentData) : Document{
             ScopeApplicationSection(data),
             MethodologySection(data),
             SummaryOfFindingsSection(data),
+            FindingVulnerabilities(data),
         ],
         numbering : {
             config : [

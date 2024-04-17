@@ -249,12 +249,12 @@ export function ScopeApplicationTable(content : ScopeApplicationTableContent) : 
 }
 
 export enum VulnerabilityAnalysisCVSS {
-    CRITICAL
+    CRITICAL = "Critical"
 };
 
 export enum VulnerabilityAnalysisStatus {
-    CLOSED,
-    OPEN
+    CLOSED = "Closed",
+    OPEN = "Open"
 }
 
 export interface VulnerabilityAnalysisTableContent{
@@ -263,7 +263,8 @@ export interface VulnerabilityAnalysisTableContent{
     cvss : VulnerabilityAnalysisCVSS;
     status : VulnerabilityAnalysisStatus;
 }
-export function VulnerabilityAnalysisTable(content : VulnerabilityAnalysisTableContent[]) : Table {
+export function VulnerabilityAnalysisTable(contents : VulnerabilityAnalysisTableContent[]) : Table {
+    let counter = 0;
     return new Table({
         width : {
             size : 200 * 45,
@@ -273,6 +274,78 @@ export function VulnerabilityAnalysisTable(content : VulnerabilityAnalysisTableC
             //Header
             generateStdTableHeader(["No", "Finding", "Severity", "CVSS", "Status"]),
             //Content
+            ...contents.map((content) => {
+                counter++;
+                return new TableRow({
+                    children: [
+                        new TableCell({
+                            children : [new Paragraph({text : `${counter}`})]
+                        }),
+                        new TableCell({
+                            children : [new Paragraph({text : `${content.finding}`})]
+                        }),
+                        new TableCell({
+                            children : [new Paragraph({text : `${content.severity}`})]
+                        }),
+                        new TableCell({
+                            children : [new Paragraph({text : `${content.cvss}`})]
+                        }),
+                        new TableCell({
+                            children : [new Paragraph({text : `${content.status}`})]
+                        }),
+                    ],
+                });
+            }),
+            
         ],
+    });
+}
+
+export interface FindingVulnerabilitiesTableContent{
+    vulnerability_analysis: VulnerabilityAnalysisTableContent,
+    target_systems: string[],
+    description: string,
+    impacts: string[],
+    evidence_image_srcs: string[],
+    recommendations: string[],
+    references: string[],
+    responses: string[],
+}
+
+export function FindingVulnerabilitiesTable(content : FindingVulnerabilitiesTableContent) : Table {
+    return new Table({
+        width : {
+            size : 200 * 45,
+            type : WidthType.DXA,
+        },
+        rows : [
+            new TableRow({
+                children: [
+                    new TableCell({
+                        rowSpan: 2,
+                        children : [
+                            new Paragraph({text : `${content.vulnerability_analysis.severity}`}),
+                            new Paragraph({text : `${content.vulnerability_analysis.cvss}`}),
+                        ]
+                    }),
+                    new TableCell({
+                        children : [
+                            new Paragraph({text : `${content.vulnerability_analysis.severity}`}),
+                            new Paragraph({text : `${content.vulnerability_analysis.cvss}`}),
+                        ]
+                    }),
+                ],
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        children : [
+                            new Paragraph({text : `${content.vulnerability_analysis.severity}`}),
+                            new Paragraph({text : `${content.vulnerability_analysis.cvss}`}),
+                        ]
+                    }),
+                ],
+            }),
+        ]
     });
 }
