@@ -29,17 +29,27 @@ export class ReportController {
   @Get('all')
   async getAllReport(@Request() req) {
     // console.log(req.user);
+    this.eventEmitter.emit('activity', {
+      user_id: req.user.userId,
+      action: 'get all report',
+    });
     return {
       message: 'success',
-      data: await this.reportService.getAllReport(req.user.userId),
+      data: await this.reportService.getAllReport(),
     };
   }
 
   @Get('count')
   async getReportCount(
+    @Request() req,
     @Query('startDate') startDate: string,
     @Query('endDate') endDate: string,
   ) {
+    this.eventEmitter.emit('activity', {
+      user_id: req.user.userId,
+      action: 'get report count',
+    });
+
     return {
       message: 'success',
       data: await this.reportService.getReportCountWhereCreatedAtIsBetween(
@@ -50,7 +60,11 @@ export class ReportController {
   }
 
   @Get(':id')
-  async getReport(@Param('id') id: string) {
+  async getReport(@Param('id') id: string, @Request() req) {
+    this.eventEmitter.emit('activity', {
+      user_id: req.user.userId,
+      action: 'get report detail',
+    });
     return {
       message: 'success',
       data: await this.reportService.getReport(id),
@@ -59,6 +73,10 @@ export class ReportController {
 
   @Post('create')
   async createReport(@Body() report: CreateReportDto, @Request() req) {
+    this.eventEmitter.emit('activity', {
+      user_id: req.user.userId,
+      action: 'create report',
+    });
     return {
       message: 'success',
       data: await this.reportService.createReport(report, req.user),
@@ -70,6 +88,10 @@ export class ReportController {
     @Param('id') id: string,
     @Res({ passthrough: true }) res: Response,
   ): Promise<StreamableFile | number> {
+    this.eventEmitter.emit('activity', {
+      user_id: res.locals.user.userId,
+      action: 'download report',
+    });
     return await this.reportService.downloadReport(id);
   }
 
@@ -77,7 +99,12 @@ export class ReportController {
   async updateReportById(
     @Param('id') id: string,
     @Body() reportUpdate: UpdateReportDto,
+    @Request() req,
   ) {
+    this.eventEmitter.emit('activity', {
+      user_id: req.user.userId,
+      action: 'update report',
+    });
     return {
       message: 'success',
       data: await this.reportService.updateReport(id, reportUpdate),
@@ -85,7 +112,11 @@ export class ReportController {
   }
 
   @Delete(':id')
-  async deleteReportById(@Param('id') id: string) {
+  async deleteReportById(@Param('id') id: string, @Request() req) {
+    this.eventEmitter.emit('activity', {
+      user_id: req.user.userId,
+      action: 'delete report',
+    });
     return {
       message: 'success',
       data: await this.reportService.deleteReport(id),

@@ -15,10 +15,7 @@ export class ActivityLogService {
 
   async get() {
     const data = await this.activityLogRepository.find();
-    return {
-      message: 'success',
-      data,
-    };
+    return data;
   }
 
   async find(id: string) {
@@ -28,10 +25,7 @@ export class ActivityLogService {
           id,
         },
       });
-      return {
-        message: 'success',
-        data,
-      };
+      return data;
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -46,10 +40,7 @@ export class ActivityLogService {
         created_at: new Date(),
         updated_at: new Date(),
       });
-      return {
-        message: 'success',
-        data: result,
-      };
+      return result;
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -58,9 +49,7 @@ export class ActivityLogService {
   async destroy(id: string) {
     try {
       await this.activityLogRepository.delete(id);
-      return {
-        message: 'success',
-      };
+      return 'success';
     } catch (error) {
       throw new BadRequestException(error.message);
     }

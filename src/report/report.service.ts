@@ -9,7 +9,6 @@ import { Packer } from 'docx';
 import { CreateReportDto, UpdateReportDto } from './dto/report.dto';
 import { ReportStatus } from './report.data';
 import { UserService } from '@/user/user.service';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class ReportService {
@@ -17,18 +16,13 @@ export class ReportService {
     @InjectRepository(Report)
     private reportRepository: Repository<Report>,
     private userService: UserService,
-    private eventEmitter: EventEmitter2,
   ) {}
 
   getReportFilePath(id: string) {
     return `src/report/generated-docx/${id}.docx`;
   }
 
-  async getAllReport(user_id: string) {
-    this.eventEmitter.emit('activity', {
-      user_id,
-      action: 'get All Report',
-    });
+  async getAllReport() {
     return this.reportRepository.find({
       select: {
         id: true,
@@ -171,14 +165,14 @@ export class ReportService {
 
   async updateReport(id: string, reportUpdate: UpdateReportDto) {
     const report = await this.getReport(id);
-
     if (!report) return;
 
     const updated_report = {
-      ...report,
+      id,
       ...reportUpdate,
       updated_at: new Date(),
     };
+    console.log(updated_report);
 
     return this.reportRepository.save(updated_report);
   }

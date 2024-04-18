@@ -6,10 +6,10 @@ export class ActivityLogController {
   constructor(private readonly activityLogService: ActivityLogService) {}
 
   @Get()
-  getAllLog() {
+  async getAllLog() {
     return {
       message: 'success',
-      data: this.activityLogService.get(),
+      data: await this.activityLogService.get(),
     };
   }
 }

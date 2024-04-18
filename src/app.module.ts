@@ -14,7 +14,6 @@ import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ActivityLogModule } from './activity_log/activity_log.module';
-import { ActivityListener } from './activity_log/listener/activity.listener';
 
 @Module({
   imports: [
@@ -58,7 +57,6 @@ import { ActivityListener } from './activity_log/listener/activity.listener';
       provide: APP_INTERCEPTOR,
       useClass: CacheInterceptor,
     },
-    ActivityListener,
   ],
 })
 export class AppModule {}
